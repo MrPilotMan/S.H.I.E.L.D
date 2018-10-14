@@ -32,14 +32,18 @@ scale       = 100000;
 k
 ps  = Radiation_Environment_Generator(particles);
 env = ps(k,:);
+
 m   = env(1);
 q   = env(2);
+
 p0x = env(3);
 p0y = env(4);
 p0z = env(5);
+
 v0x = env(6);
 v0y = env(7);
 v0z = env(8);
+
 a0x = env(9);
 a0y = env(10);
 a0z = env(11);

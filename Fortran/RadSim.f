@@ -4,7 +4,7 @@ implicit none
 ! Constants
 integer, parameter :: particles  = 100
 integer :: hits                  = 0
-integer, parameter :: iterations = 100
+integer, parameter :: coilTurns = 100
 real :: i                        = .1                        ! A
 
 real, parameter :: innerRadius   = 10                        ! meters
@@ -20,7 +20,47 @@ real, parameter :: delt          = 10 ** -6                  ! seconds
 real :: scale                    = 100000
 
 
+! What does this do? 
+do k = 1, 100
+    real :: ps  = radiationEnvironmentGenerator(particles)
+    real :: env = ps(k,:)
+
+    real :: m   = env(1)
+    real :: q   = env(2)
+
+    real :: p0x = env(3)
+    real :: p0y = env(4)
+    real :: p0z = env(5)
+
+    real :: v0x = env(6)
+    real :: v0y = env(7)
+    real :: v0z = env(8)
+
+    real :: a0x = env(9)
+    real :: a0y = env(10)
+    real :: a0z = env(11)
+end do
+
+
 ! Wire geometry
+real, dimension(:) :: wiregeometry;
+
+real :: phimax = asin(((torusradius - innerradius)/2) / (innerradius + (torusradius - innerradius)/2));
+real :: dphi = coilTurns * dtheta;
+real :: phi = pi/2 - phimax;
+
+! ISSUE HERE
+do theta = 0:dtheta:(2 * pi)
+    real :: x = (torusradius + innerradius * cos(phi)) * cos(theta);
+    real :: y = (torusradius + innerradius * cos(phi)) * sin(theta);
+    real :: z = innerradius * sin(phi);
+
+    ! ISSUE HERE
+    wiregeometry = [wiregeometry; x, y, z];
+    real :: phi = phi + dphi;
+end do
+
+print *, "Wire geometry complete \n"
 
 
 ! Radiation environment generator
@@ -57,7 +97,7 @@ SUBROUTINE radiationEnvironmentGenerator(particles)
                     v = generateVectors(1)
             end do
         end do
-
+    RETURN v
 end do
 
 end program radsim
