@@ -6,27 +6,27 @@ particles = 100;
 hits = 0;
 for k = 1:100
 %***************CONSTRAINTS**********************
-innerradius = 10;             %m
-torusradius = 20;             %m
+innerradius = 10;             % meters
+torusradius = 20;             % meters
 totalradius = innerradius+torusradius;
-N           = 100;            %number of turns
-I.          = .1;             %A
-% q         = -1.6*10^-19;    %Coulombs
-% m         = 9.11*10^-31;    %kg
-mu          = 4 * pi * 10^-7; %[Tm/A]
-% p0x       = -20;            %m
-% p0y       = 0;              %m
-% p0z       = 0;              %m
-% v0x       = 1;              %m/s
-% v0y       = 0;              %m/s
-% v0z       = 0;              %m/s
+N           = 100;            % number of turns
+I.          = .1;             % A
+% q         = -1.6*10^-19;    % Coulombs
+% m         = 9.11*10^-31;    % kg
+mu          = 4 * pi * 10^-7; % [Tm/A]
+% p0x       = -20;            % meters
+% p0y       = 0;              % meters
+% p0z       = 0;              % meters
+% v0x       = 1;              % m/s
+% v0y       = 0;              % m/s
+% v0z       = 0;              % m/s
 
 %LEAVE THESE AS ZERO
-% a0x       = 0;              %m/s^2
-% a0y       = 0;              %m/s^2
-% a0z       = 0;              %m/s^2
-dtheta      = .001 / pi;      %radians
-delt        = 1e-6;           %s
+% a0x       = 0;              % m/s^2
+% a0y       = 0;              % m/s^2
+% a0z       = 0;              % m/s^2
+dtheta      = .001 / pi;      % radians
+delt        = 1e-6;           % seconds
 scale       = 100000;
 
 k
