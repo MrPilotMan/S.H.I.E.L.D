@@ -61,7 +61,7 @@ do theta = 0:dtheta:(2 * pi)
 end do
 
 print *, "Wire geometry complete \n"
-
+!test
 
 ! Radiation environment generator
 subroutine radiationEnvironmentGenerator(particles) 
