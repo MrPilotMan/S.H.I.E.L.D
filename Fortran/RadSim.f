@@ -85,7 +85,7 @@ subroutine radiationEnvironmentGenerator(particles)
                 end do
                 return v
             end if
-        end
+        end subroutine generateVectors
 
         p, v = generateVectors(.false.)
 
