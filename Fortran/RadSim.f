@@ -7,8 +7,8 @@ integer :: hits                  = 0
 integer, parameter :: coilTurns = 100
 real :: i                        = .1                        ! A
 
-real, parameter :: innerRadius   = 10                        ! meters
-real, parameter :: torusRadius   = 20                        ! meters
+real, parameter :: innerRadius   = 10.0                      ! meters
+real, parameter :: torusRadius   = 20.0                      ! meters
 real, parameter :: totalRadius   = innerRadius + torusRadius ! meters
 
 double precision, parameter :: pi            = 4 * atan(1.0_8)
