@@ -30,10 +30,10 @@ delt        = 1e-6;           %s
 scale       = 100000;
 
 k
-ps = Radiation_Environment_Generator(particles);
+ps  = Radiation_Environment_Generator(particles);
 env = ps(k,:);
-m = env(1);
-q = env(2);
+m   = env(1);
+q   = env(2);
 p0x = env(3);
 p0y = env(4);
 p0z = env(5);
@@ -70,6 +70,7 @@ fprintf('Wire Geometry Complete\n')
 %File in 3 Column Format. Column 1: X Coord. Column 2: Y Coord. Column 3: Z Coord.
 %**************Reading In External Geometry**************
 
+
 %Initial Conditions
 position        = [p0x, p0y, p0z];
 velocity        = [v0x, v0y, v0z];
@@ -82,7 +83,6 @@ allacceleration = acceleration;
 B = [0, 0, 0];
 allB = B;
 time = 0;
-
 
 for n = 0:delt:10
     
@@ -100,6 +100,7 @@ for n = 0:delt:10
     ay = acceleration(2);
     az = acceleration(3);
     
+
     %Calculating B Field
     for n = 2:size(wiregeometry,1)
         dLx = wiregeometry(n, 1) - wiregeometry(n - 1, 1);
@@ -127,7 +128,7 @@ for n = 0:delt:10
     ay = q/m *- (vx*Bz - Bx*vz);
     az = q/m * (vx*By - Bx*vy);
     
-    
+
     %ITERATIVE DEPENDENT ON EACH STEP delt-BETTER METHOD
     velocitynext = [delt * (q/m * (vy*Bz - vz*By)) + vx, ...
                     delt * (q/m * (vz*Bx - vx*Bz)) + vy, ...
@@ -139,6 +140,7 @@ for n = 0:delt:10
 
     accelerationnext = [ax, ay, az];
     
+
   if (positionnext(3) >= -innerradius) && (positionnext(3) <= innerradius)
         if sqrt(positionnext(1)^2 + positionnext(2)^2) <= innerradius 
             fprintf('Hit the Craft\n')
@@ -167,6 +169,7 @@ for n = 0:delt:10
     time = time + delt;
 end
 
+
 figure()
 plot3(wiregeometry(:, 1), wiregeometry(:, 2), wiregeometry(:, 3),'Color','b')
 hold on
@@ -179,34 +182,33 @@ xlabel('X')
 ylabel('Y')
 zlabel('Z')
 
+
 end
     function environments = Radiation_Environment_Generator(particles)
         for o = 1:particles
-    charge = randi([-3, 3]);
-    
-    mass = rand * 3.952562528e-25;
-    
-    px1 = (2 * 100 * rand) - 100;
-    py1 = (2 * 100 * rand) - 100;
-    pz1 = (2 * 100 * rand) - 100;
-    p = [px1, py1, pz1];
-    
-    vx1 = (2 * 3e8 * rand) - 3e8;
-    vy1 = (2 * 3e8 * rand) - 3e8;
-    vz1 = (2 * 3e8 * rand) - 3e8;
-    
-    while (abs(tan(acos(dot([vx1, vy1, vz1], [-px1, -py1, -pz1]) / (norm([vx1, vy1, vz1]) * norm([px1, py1, pz1])))))) > abs((30 / norm([px1, py1, pz1])))
-        vx1 = (2 * 3e8 * rand) - 3e8;
-        vy1 = (2 * 3e8 * rand) - 3e8;
-        vz1 = (2 * 3e8 * rand) - 3e8;
-        while sqrt((vx1^2) + (vy1^2) + (vz1^2)) >= 300000000
+            charge = randi([-3, 3]);
+            
+            mass = rand * 3.952562528e-25;
+            
+            px1 = (2 * 100 * rand) - 100;
+            py1 = (2 * 100 * rand) - 100;
+            pz1 = (2 * 100 * rand) - 100;
+            p = [px1, py1, pz1];
+            
             vx1 = (2 * 3e8 * rand) - 3e8;
             vy1 = (2 * 3e8 * rand) - 3e8;
             vz1 = (2 * 3e8 * rand) - 3e8;
+            
+            while (abs(tan(acos(dot([vx1, vy1, vz1], [-px1, -py1, -pz1]) / (norm([vx1, vy1, vz1]) * norm([px1, py1, pz1])))))) > abs((30 / norm([px1, py1, pz1])))
+                vx1 = (2 * 3e8 * rand) - 3e8;
+                vy1 = (2 * 3e8 * rand) - 3e8;
+                vz1 = (2 * 3e8 * rand) - 3e8;
+                while sqrt((vx1^2) + (vy1^2) + (vz1^2)) >= 300000000
+                    vx1 = (2 * 3e8 * rand) - 3e8;
+                    vy1 = (2 * 3e8 * rand) - 3e8;
+                    vz1 = (2 * 3e8 * rand) - 3e8;
         end
     end
-    
-    
     
     v = [vx1, vy1, vz1];
     
@@ -238,9 +240,9 @@ end
 %     ay = (2 * 10000 * rand) - 10000;
 %     az = (2 * 10000 * rand) - 10000;
 
-      ax1 = 0;
-      ay1 = 0;
-      az1 = 0;
+        ax1 = 0;
+        ay1 = 0;
+        az1 = 0;
     a = [ax1, ay1, az1]; 
     
     line = [mass, charge, px1, py1, pz1, vx1, vy1, vz1, ax1, ay1, az1];
