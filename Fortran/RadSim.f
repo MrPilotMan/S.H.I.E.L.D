@@ -19,4 +19,7 @@ real :: delt            = 10 ** -6                    ! seconds
 
 real :: scale           = 100000
 
+
+! Wire geometry
+
 end program radsim
