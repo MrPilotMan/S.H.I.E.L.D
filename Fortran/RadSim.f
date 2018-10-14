@@ -31,7 +31,7 @@ SUBROUTINE radiationEnvironmentGenerator(particles)
 
         ! NEED THE RANDOM FUNCTION IN FORTRAN
         SUBROUTINE generateVectors(velocityOnly)
-        	if (velocityOnly == 1) then
+        	if (velocityOnly /= 1) then
                 real, dimension(1:3) :: p_vect, v_vect
         		do i = 1,3
                     p_vect(i) = (2 * 100 * rand) - 100                     ! loop to generate px1, py1, pz1
@@ -44,16 +44,19 @@ SUBROUTINE radiationEnvironmentGenerator(particles)
                     v_vect(i) = (2 * (3 * 10 ** 8) * rand) - (3 * 10 ** 8)
                 end do
                 RETURN v
+            end if
         end
 
         p, v = generateVectors(0)
 
         ! NEED THE NORMALIZE FUNCTION IN FORTRAN
-        while (abs(tan(acos(DOT_PRODUCT(v, p * -1) / (norm(v) * norm(p)))))) > abs((30 / norm(p)))
+        do while (abs(tan(acos(DOT_PRODUCT(v, p * -1) / (norm(v) * norm(p)))))) > abs((30 / norm(p)))
             v = generateVectors(1)
 
-            while sqrt((v(1) ** 2) + (v(2) ** 2) + (v(3) ** 2)) >= 300000000
+            do while sqrt((v(1) ** 2) + (v(2) ** 2) + (v(3) ** 2)) >= 300000000
                     v = generateVectors(1)
+            end do
+        end do
 
 end do
 
