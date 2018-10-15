@@ -12,6 +12,7 @@ Comming soon...
 
 ## To Do
 * [ ] Refactor
+* [ ] Benchmarking
 * [ ] Unit testing
 * [ ] Save data to CSV
 * [ ] Hit detection
