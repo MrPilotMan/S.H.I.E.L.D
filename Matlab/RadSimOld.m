@@ -217,38 +217,26 @@ hits = 0;
 
             v = [vx1, vy1, vz1];
 
-            % if px > 0 && vx > 0
+            % if px > 0 && vx > 0 || px < 0 && vx < 0
             %   vx = vx * (-1);
             % end
 
-            % if px < 0 && vx < 0
-            %   vx = vx * (-1);
+            % if py > 0 && vy > 0 || py < 0 && vy < 0
+            %   vy *= -1;
             % end
 
-            % if py > 0 && vy > 0
-            %   vy = vy * (-1);
-            % end
-
-            % if py < 0 && vy < 0
-            %   vy = vy * (-1);
-            % end
-
-            % if pz > 0 && vz > 0
-            %   vz = vz * (-1);
-            % end
-
-            % if pz < 0 && vz < 0
-            %   vz = vz * (-1);
+            % if pz > 0 && vz > 0 || pz < 0 && vz < 0
+            %   vz *= -1;
             % end
 
             % ax = (2 * 10000 * rand) - 10000;
             % ay = (2 * 10000 * rand) - 10000;
             % az = (2 * 10000 * rand) - 10000;
 
-            ax1 = 0;
-            ay1 = 0;
-            az1 = 0;
-            a = [ax1, ay1, az1]; 
+            a = [ax1, ay1, az1];
+            a(1) = 0;
+            a(2) = 0;
+            a(3) = 0;
 
             line = [mass, charge, px1, py1, pz1, vx1, vy1, vz1, ax1, ay1, az1];
             environment(o, :) = line;
