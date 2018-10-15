@@ -167,13 +167,22 @@ hits = 0;
             time = time + delt;
         end
 
-
+        % Create particle and wire plot
         figure()
+        
+        % Create wire geometry
         plot3(wiregeometry(:, 1), wiregeometry(:, 2), wiregeometry(:, 3),'Color','b')
         hold on
+        
+        % Velocity plot
         quiver3(allposition(:, 1), allposition(:, 2), allposition(:, 3), allB(:, 1), allB(:, 2), allB(:, 3), 'MaxHeadSize', 2)
+        
+        % Plot particel path
         plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3))
+        % Plot Particle
         plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3), '*')
+        
+        % Clean up
         grid on
         grid minor
         xlabel('X')
