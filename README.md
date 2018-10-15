@@ -16,8 +16,8 @@ Comming soon...
 * [ ] Save data to CSV
 * [ ] Hit detection
 * [ ] Fortran translation
-* [ ] Multithreading
-* [ ] OpenCL support
+* [ ] Parallelization?
+* [ ] OpenCL support?
 * [ ] GUI
 * [ ] Packaging
 
