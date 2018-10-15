@@ -11,9 +11,12 @@ hits = 0;
         totalradius = innerradius+torusradius;
         N           = 100;            % number of turns
         I           = .1;             % A
+        mu          = 4 * pi * 10^-7; % [Tm/A]
+        dtheta      = .001 / pi;      % radians
+        delt        = 1e-6;           % seconds
+        scale       = 100000;
         % q         = -1.6*10^-19;    % Coulombs
         % m         = 9.11*10^-31;    % kg
-        mu          = 4 * pi * 10^-7; % [Tm/A]
         % p0x       = -20;            % meters
         % p0y       = 0;              % meters
         % p0z       = 0;              % meters
@@ -25,9 +28,6 @@ hits = 0;
         % a0x       = 0;              % m/s^2
         % a0y       = 0;              % m/s^2
         % a0z       = 0;              % m/s^2
-        dtheta      = .001 / pi;      % radians
-        delt        = 1e-6;           % seconds
-        scale       = 100000;
 
         k;
         ps  = Radiation_Environment_Generator(particles);
