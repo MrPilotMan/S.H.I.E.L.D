@@ -12,11 +12,13 @@ Comming soon...
 
 ## To Do
 * [ ] Refactor
-* [ ] Save date to CSV
+* [ ] Save data to CSV
 * [ ] Hit detection
 * [ ] Fortran translation
 * [ ] Multithreading
 * [ ] OpenCL support
+* [ ] GUI
+* [ ] Packaging
 
 ## Contributers
 * John Galjanic
