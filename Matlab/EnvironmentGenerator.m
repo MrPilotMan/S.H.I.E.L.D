@@ -1,16 +1,16 @@
-function environments = Radiation_Environment_Generator(particles)
+function environments = radiationEnvironmentGenerator(particles)
     for o = 1:particles
         charge = randi([-3, 3]);
         mass = rand * 3.952562528e-25;
 
         positionVector = updateVector('p');
-        velocityVector = updateVector("v");
+        velocityVector = updateVector('v');
 
         while (abs(tan(acos(dot(velocityVector, -positionVector) / (norm(velocityVector) * norm(positionVector)))))) > abs((30 / norm(positionVector)))
-            velocityVector = updateVector("v");
+            velocityVector = updateVector('v');
 
             while sqrt((velocityVector(1)^2) + (velocityVector(2)^2) + (velocityVector(3)^2)) >= 300000000
-                velocityVector = updateVector("v");
+                velocityVector = updateVector('v');
             end
         end
 
@@ -38,23 +38,20 @@ function environments = Radiation_Environment_Generator(particles)
     environments = environment;
 end
 
-function vector = updateVector(algorithmType)
-        vector = [0, 0, 0];
+function vector = updateVector(algorithm)
 
         for i = 1:3
-            p_algo = (2 * 100 * rand) - 100;
-            v_algo = (2 * 3e8 * rand) - 3e8;
-            a_algo = (2 * 10000 * rand) - 10000;
-
-            % May be a way to eliminate these checks by passing in algo name at function call
-            if algorithmType == "p"
-                value = p_algo;
-            elseif algorithmType == "v"
-                value = v_algo;
-            elseif algorithmType == "a"
-                value = a_algo
+            if algorithm == 'p'
+                positionAlgorithm = (2 * 100 * rand) - 100;
+                value = positionAlgorithm;
+            elseif algorithm == 'v'
+                velocityAlgorithm = (2 * 3e8 * rand) - 3e8;
+                value = velocityAlgorithm;
+          % elseif algorithm == 'a'
+                % accelerationAlgorithm = (2 * 10000 * rand) - 10000;
+                % value = accelerationAlgorithm
             else
-                fprintf('incorrect alogirthm type');
+                fprintf('unkown alogrithm');
             end
 
             vector(i) = value;

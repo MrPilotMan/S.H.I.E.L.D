@@ -15,6 +15,9 @@ function RadSimOld
         dtheta      = .001 / pi;      % radians
         delt        = 1e-6;           % seconds
         scale       = 100000;
+        phimax = asin(((torusradius - innerradius)/2) / (innerradius + (torusradius - innerradius)/2));
+        dphi = N * dtheta;
+        phi = pi/2 - phimax;
         % q         = -1.6*10^-19;    % Coulombs
         % m         = 9.11*10^-31;    % kg
         % p0x       = -20;            % meters
@@ -31,7 +34,7 @@ function RadSimOld
 
         k;
         ps  = radiationEnvironmentGenerator(particles);
-        env = ps(k,:);
+        env = ps(k, :);
 
         m   = env(1);
         q   = env(2);
@@ -49,10 +52,7 @@ function RadSimOld
         a0z = env(11);
 
         % Making Toroidal Wire Geometry
-        wiregeometry = zeros(int16((2 * pi)/dtheta), 3);
-        phimax = asin(((torusradius - innerradius)/2) / (innerradius + (torusradius - innerradius)/2));
-        dphi = N * dtheta;
-        phi = pi/2 - phimax;
+        wiregeometry = zeros(uint16((2 * pi)/dtheta), 3);
 
         i = 1;
         for theta = 0:dtheta:(2 * pi)
@@ -61,8 +61,9 @@ function RadSimOld
             xyz(2) = (torusradius + innerradius * cos(phi)) * sin(theta);
             xyz(3) = innerradius * sin(phi);
             
+            wiregeometry(i, :) = xyz;
+            
             i = i + 1;
-            wiregeometry(i,:) = xyz;
             phi = phi + dphi;
         end
 
@@ -81,7 +82,7 @@ function RadSimOld
         allvelocity     = velocity;
         allacceleration = acceleration;
 
-        B = [0, 0, 0];
+        % B = [0, 0, 0];
         allB = B;
         time = 0;
 
@@ -145,7 +146,7 @@ function RadSimOld
             if (positionnext(3) >= -innerradius) && (positionnext(3) <= innerradius)
                 if sqrt(positionnext(1)^2 + positionnext(2)^2) <= innerradius 
                     fprintf('Hit the Craft\n')
-                    hits = hits+1;
+                    hits = hits + 1;
                     break
                 end
             end
@@ -182,6 +183,7 @@ function RadSimOld
         
         % Plot particel path
         plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3))
+        
         % Plot Particle
         plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3), '*')
         

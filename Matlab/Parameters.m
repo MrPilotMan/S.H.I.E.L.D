@@ -8,6 +8,10 @@ global torusRad  = 20;                % meters
 global totalRad  = innerRad+torusRad; % meters
 global coilTurns = 100;  		       
 
+global phimax = asin(((torusradius - innerradius)/2) / (innerradius + (torusradius - innerradius)/2));
+global dphi = N * dtheta;
+global phi = pi/2 - phimax;
+
 % Physics
 global I         = .1;                % amperes
 
