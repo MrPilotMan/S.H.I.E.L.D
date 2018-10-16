@@ -30,7 +30,7 @@ function RadSimOld
         % a0z       = 0;              % m/s^2
 
         k;
-        ps  = Radiation_Environment_Generator(particles);
+        ps  = radiationEnvironmentGenerator(particles);
         env = ps(k,:);
 
         m   = env(1);
@@ -190,7 +190,7 @@ function RadSimOld
         zlabel('Z')
     end
 
-    function environments = Radiation_Environment_Generator(particles)
+    function environments = radiationEnvironmentGenerator(particles)
 
         function vector = updateVector(algorithmType)
 
