@@ -192,20 +192,20 @@ function RadSimOld
 
     function environments = radiationEnvironmentGenerator(particles)
 
-        function vector = updateVector(algorithmType)
+        function vector = updateVector(algorithm)
 
             for i = 1:3
-                if algorithmType == 'p'
+                if algorithm == 'p'
                     positionAlgorithm = (2 * 100 * rand) - 100;
                     value = positionAlgorithm;
-                elseif algorithmType == 'v'
+                elseif algorithm == 'v'
                     velocityAlgorithm = (2 * 3e8 * rand) - 3e8;
                     value = velocityAlgorithm;
-              % elseif algorithmType == 'a'
+              % elseif algorithm == 'a'
                     % accelerationAlgorithm = (2 * 10000 * rand) - 10000;
                     % value = accelerationAlgorithm
                 else
-                    fprintf('incorrect alogrithm type');
+                    fprintf('unkown alogrithm');
                 end
 
                 vector = value;
