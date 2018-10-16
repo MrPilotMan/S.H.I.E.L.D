@@ -200,6 +200,7 @@ function RadSimOld
                 v_algo = (2 * 3e8 * rand) - 3e8;
                 a_algo = (2 * 10000 * rand) - 10000;
 
+                % May be a way to eliminate these checks by passing in algo name at function call
                 if algorithmType == "p"
                     value = p_algo;
                 elseif algorithmType == "v"
