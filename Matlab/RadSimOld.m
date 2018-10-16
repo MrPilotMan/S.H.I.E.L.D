@@ -49,25 +49,28 @@ function RadSimOld
         a0z = env(11);
 
         % Making Toroidal Wire Geometry
-        wiregeometry = [];
+        wiregeometry = zeros(int16((2 * pi)/dtheta), 3);
         phimax = asin(((torusradius - innerradius)/2) / (innerradius + (torusradius - innerradius)/2));
         dphi = N * dtheta;
         phi = pi/2 - phimax;
 
+        i = 1;
         for theta = 0:dtheta:(2 * pi)
-            x = (torusradius + innerradius * cos(phi)) * cos(theta);
-            y = (torusradius + innerradius * cos(phi)) * sin(theta);
-            z = innerradius * sin(phi);
-
-            wiregeometry = [wiregeometry; x, y, z];
+            xyz = [0, 0, 0];
+            xyz(1) = (torusradius + innerradius * cos(phi)) * cos(theta);
+            xyz(2) = (torusradius + innerradius * cos(phi)) * sin(theta);
+            xyz(3) = innerradius * sin(phi);
+            
+            i = i + 1;
+            wiregeometry(i,:) = xyz;
             phi = phi + dphi;
         end
 
         fprintf('Wire Geometry Complete\n')
 
         % Reading In External Geometry
-        %wiregeometry=xlsread('FILENAME.xlsx')
-        %File in 3 Column Format. Column 1: X Coord. Column 2: Y Coord. Column 3: Z Coord.
+        % wiregeometry = xlsread('FILENAME.xlsx')
+        % File in 3 Column Format. Column 1: X Coord. Column 2: Y Coord. Column 3: Z Coord.
 
         %Initial Conditions
         position        = [p0x, p0y, p0z];
