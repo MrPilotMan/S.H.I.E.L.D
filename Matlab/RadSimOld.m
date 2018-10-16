@@ -208,7 +208,7 @@ function RadSimOld
                     fprintf('unkown alogrithm');
                 end
 
-                vector = value;
+                vector(i) = value;
             end
         end
 
