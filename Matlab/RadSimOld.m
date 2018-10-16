@@ -196,17 +196,17 @@ function RadSimOld
             vector = [0, 0, 0];
 
             for i = 1:3
-                p_algo = (2 * 100 * rand) - 100;
-                v_algo = (2 * 3e8 * rand) - 3e8;
-                a_algo = (2 * 10000 * rand) - 10000;
+                positionAlgorithmo = (2 * 100 * rand) - 100;
+                velocityAlgorithm = (2 * 3e8 * rand) - 3e8;
+              % accelerationAlgorithm = (2 * 10000 * rand) - 10000;
 
                 % May be a way to eliminate these checks by passing in algo name at function call
                 if algorithmType == 'p'
-                    value = p_algo;
+                    value = positionAlgorithm;
                 elseif algorithmType == 'v'
-                    value = v_algo;
-                elseif algorithmType == 'a'
-                    value = a_algo
+                    value = velocityAlgorithm;
+              % elseif algorithmType == 'a'
+              %    value = accelerationAlgorithm
                 else
                     fprintf('incorrect alogirthm type');
                 end
