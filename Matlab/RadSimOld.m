@@ -15,9 +15,6 @@ function RadSimOld
         dtheta      = .001 / pi;      % radians
         delt        = 1e-6;           % seconds
         scale       = 100000;
-        phimax = asin(((torusradius - innerradius)/2) / (innerradius + (torusradius - innerradius)/2));
-        dphi = N * dtheta;
-        phi = pi/2 - phimax;
         % q         = -1.6*10^-19;    % Coulombs
         % m         = 9.11*10^-31;    % kg
         % p0x       = -20;            % meters
@@ -52,22 +49,7 @@ function RadSimOld
         a0z = env(11);
 
         % Making Toroidal Wire Geometry
-        wiregeometry = zeros(uint16((2 * pi)/dtheta), 3);
-
-        i = 1;
-        for theta = 0:dtheta:(2 * pi)
-            xyz = [0, 0, 0];
-            xyz(1) = (torusradius + innerradius * cos(phi)) * cos(theta);
-            xyz(2) = (torusradius + innerradius * cos(phi)) * sin(theta);
-            xyz(3) = innerradius * sin(phi);
-            
-            wiregeometry(i, :) = xyz;
-            
-            i = i + 1;
-            phi = phi + dphi;
-        end
-
-        fprintf('Wire Geometry Complete\n')
+        wiregeometry = createWireGeometry();
 
         % Reading In External Geometry
         % wiregeometry = xlsread('FILENAME.xlsx')
@@ -170,29 +152,30 @@ function RadSimOld
             allB = [allB; B];
             time = time + delt;
         end
+    plotParticle()
+    end
 
-        % Create particle and wire plot
-        figure()
-        
-        % Create wire geometry
-        plot3(wiregeometry(:, 1), wiregeometry(:, 2), wiregeometry(:, 3),'Color','b')
-        hold on
-        
-        % Velocity plot
-        quiver3(allposition(:, 1), allposition(:, 2), allposition(:, 3), allB(:, 1), allB(:, 2), allB(:, 3), 'MaxHeadSize', 2)
-        
-        % Plot particel path
-        plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3))
-        
-        % Plot Particle
-        plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3), '*')
-        
-        % Clean up
-        grid on
-        grid minor
-        xlabel('X')
-        ylabel('Y')
-        zlabel('Z')
+    function geometry = createWireGeometry()
+        phimax = asin(((torusradius - innerradius)/2) / (innerradius + (torusradius - innerradius)/2));
+        dphi = N * dtheta;
+        phi = pi/2 - phimax;
+
+        geometry = zeros(uint16((2 * pi)/dtheta), 3);
+
+        i = 1;
+        for theta = 0:dtheta:(2 * pi)
+            xyz = [0, 0, 0];
+            xyz(1) = (torusradius + innerradius * cos(phi)) * cos(theta);
+            xyz(2) = (torusradius + innerradius * cos(phi)) * sin(theta);
+            xyz(3) = innerradius * sin(phi);
+            
+            geometry(i, :) = xyz;
+            
+            i = i + 1;
+            phi = phi + dphi;
+        end
+
+        fprintf('Wire Geometry Complete\n')
     end
 
     function environments = radiationEnvironmentGenerator(particles)
@@ -255,4 +238,30 @@ function RadSimOld
         end
         environments = environment;
     end
+
+    function plotParticle()
+        % Create particle and wire plot
+        figure()
+        
+        % Create wire geometry
+        plot3(wiregeometry(:, 1), wiregeometry(:, 2), wiregeometry(:, 3),'Color','b')
+        hold on
+        
+        % Velocity plot
+        quiver3(allposition(:, 1), allposition(:, 2), allposition(:, 3), allB(:, 1), allB(:, 2), allB(:, 3), 'MaxHeadSize', 2)
+        
+        % Plot particel path
+        plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3))
+
+        % Plot Particle
+        plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3), '*')
+        
+        % Clean up
+        grid on
+        grid minor
+        xlabel('X')
+        ylabel('Y')
+        zlabel('Z')
+    end
+
 end
