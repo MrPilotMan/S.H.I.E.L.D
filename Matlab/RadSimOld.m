@@ -193,25 +193,22 @@ function RadSimOld
     function environments = Radiation_Environment_Generator(particles)
 
         function vector = updateVector(algorithmType)
-            vector = [0, 0, 0];
 
             for i = 1:3
-                positionAlgorithm = (2 * 100 * rand) - 100;
-                velocityAlgorithm = (2 * 3e8 * rand) - 3e8;
-              % accelerationAlgorithm = (2 * 10000 * rand) - 10000;
-
-                % May be a way to eliminate these checks by passing in algo name at function call
                 if algorithmType == 'p'
+                    positionAlgorithm = (2 * 100 * rand) - 100;
                     value = positionAlgorithm;
                 elseif algorithmType == 'v'
+                    velocityAlgorithm = (2 * 3e8 * rand) - 3e8;
                     value = velocityAlgorithm;
               % elseif algorithmType == 'a'
-              %    value = accelerationAlgorithm
+                    % accelerationAlgorithm = (2 * 10000 * rand) - 10000;
+                    % value = accelerationAlgorithm
                 else
-                    fprintf('incorrect alogirthm type');
+                    fprintf('incorrect alogrithm type');
                 end
 
-                vector(i) = value;
+                vector = value;
             end
         end
 
