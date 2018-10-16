@@ -196,7 +196,7 @@ function RadSimOld
             vector = [0, 0, 0];
 
             for i = 1:3
-                positionAlgorithmo = (2 * 100 * rand) - 100;
+                positionAlgorithm = (2 * 100 * rand) - 100;
                 velocityAlgorithm = (2 * 3e8 * rand) - 3e8;
               % accelerationAlgorithm = (2 * 10000 * rand) - 10000;
 
