@@ -1,9 +1,9 @@
 function RadSimOld
-clear
-clc;
-close all
-particles = 100;
-hits = 0;
+    clear
+    clc;
+    close all
+    particles = 100;
+    hits = 0;
     for k = 1:100
         % Constraints
         innerradius = 10;             % meters
@@ -156,11 +156,11 @@ hits = 0;
 
             allposition     = [allposition; positionnext];
             allvelocity     = [allvelocity; velocitynext];
-            allacceleration =[allacceleration; accelerationnext];
+            allacceleration = [allacceleration; accelerationnext];
 
             position        = positionnext;
             velocity        = velocitynext;
-            acceleration    =accelerationnext;
+            acceleration    = accelerationnext;
 
             fprintf('X: %f\tY: %f\t Z: %f\n', position(1), position(2), position(3))
             allB = [allB; B];
@@ -191,31 +191,43 @@ hits = 0;
     end
 
     function environments = Radiation_Environment_Generator(particles)
+
+        function vector = updateVector(algorithmType)
+            vector = [0, 0, 0];
+
+            for i = 1:3
+                p_algo = (2 * 100 * rand) - 100;
+                v_algo = (2 * 3e8 * rand) - 3e8;
+                a_algo = (2 * 10000 * rand) - 10000;
+
+                if algorithmType == "p"
+                    value = p_algo;
+                elseif algorithmType == "v"
+                    value = v_algo;
+                elseif algorithmType == "a"
+                    value = a_algo
+                else
+                    fprintf('incorrect alogirthm type');
+                end
+
+                vector(i) = value;
+            end
+        end
+
         for o = 1:particles
             charge = randi([-3, 3]);
             mass = rand * 3.952562528e-25;
 
-            px1 = (2 * 100 * rand) - 100;
-            py1 = (2 * 100 * rand) - 100;
-            pz1 = (2 * 100 * rand) - 100;
-            p = [px1, py1, pz1];
+            positionVector = updateVector('p');
+            velocityVector = updateVector("v");
 
-            vx1 = (2 * 3e8 * rand) - 3e8;
-            vy1 = (2 * 3e8 * rand) - 3e8;
-            vz1 = (2 * 3e8 * rand) - 3e8;
+            while (abs(tan(acos(dot(velocityVector, -positionVector) / (norm(velocityVector) * norm(positionVector)))))) > abs((30 / norm(positionVector)))
+                velocityVector = updateVector("v");
 
-            while (abs(tan(acos(dot([vx1, vy1, vz1], [-px1, -py1, -pz1]) / (norm([vx1, vy1, vz1]) * norm([px1, py1, pz1])))))) > abs((30 / norm([px1, py1, pz1])))
-                vx1 = (2 * 3e8 * rand) - 3e8;
-                vy1 = (2 * 3e8 * rand) - 3e8;
-                vz1 = (2 * 3e8 * rand) - 3e8;
-                while sqrt((vx1^2) + (vy1^2) + (vz1^2)) >= 300000000
-                    vx1 = (2 * 3e8 * rand) - 3e8;
-                    vy1 = (2 * 3e8 * rand) - 3e8;
-                    vz1 = (2 * 3e8 * rand) - 3e8;
+                while sqrt((velocityVector(1)^2) + (velocityVector(2)^2) + (velocityVector(3)^2)) >= 300000000
+                    velocityVector = updateVector("v");
                 end
             end
-
-            v = [vx1, vy1, vz1];
 
             % if px > 0 && vx > 0 || px < 0 && vx < 0
             %   vx = vx * (-1);
@@ -229,16 +241,13 @@ hits = 0;
             %   vz *= -1;
             % end
 
-            % ax = (2 * 10000 * rand) - 10000;
-            % ay = (2 * 10000 * rand) - 10000;
-            % az = (2 * 10000 * rand) - 10000;
+            accelerationVector = [0, 0, 0];
 
-            a = [ax1, ay1, az1];
-            a(1) = 0;
-            a(2) = 0;
-            a(3) = 0;
+            line = [mass, charge, ...
+                    positionVector(1), positionVector(2), positionVector(3), ...
+                    velocityVector(1), velocityVector(2), velocityVector(3), ...
+                    accelerationVector(1), accelerationVector(2), accelerationVector(3)];
 
-            line = [mass, charge, px1, py1, pz1, vx1, vy1, vz1, ax1, ay1, az1];
             environment(o, :) = line;
         end
         environments = environment;
