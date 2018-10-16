@@ -201,11 +201,11 @@ function RadSimOld
                 a_algo = (2 * 10000 * rand) - 10000;
 
                 % May be a way to eliminate these checks by passing in algo name at function call
-                if algorithmType == "p"
+                if algorithmType == 'p'
                     value = p_algo;
-                elseif algorithmType == "v"
+                elseif algorithmType == 'v'
                     value = v_algo;
-                elseif algorithmType == "a"
+                elseif algorithmType == 'a'
                     value = a_algo
                 else
                     fprintf('incorrect alogirthm type');
@@ -220,13 +220,13 @@ function RadSimOld
             mass = rand * 3.952562528e-25;
 
             positionVector = updateVector('p');
-            velocityVector = updateVector("v");
+            velocityVector = updateVector('v');
 
             while (abs(tan(acos(dot(velocityVector, -positionVector) / (norm(velocityVector) * norm(positionVector)))))) > abs((30 / norm(positionVector)))
-                velocityVector = updateVector("v");
+                velocityVector = updateVector('v');
 
                 while sqrt((velocityVector(1)^2) + (velocityVector(2)^2) + (velocityVector(3)^2)) >= 300000000
-                    velocityVector = updateVector("v");
+                    velocityVector = updateVector('v');
                 end
             end
 

@@ -1,5 +1,4 @@
 function environments = Radiation_Environment_Generator(particles)
-
     for o = 1:particles
         charge = randi([-3, 3]);
         mass = rand * 3.952562528e-25;
