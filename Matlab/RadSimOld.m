@@ -1,4 +1,4 @@
-function RadSimOrig
+function RadSimOld
     
     particlesPlotted = 0;
     particlesRequested = 100;
@@ -44,6 +44,7 @@ function RadSimOrig
 
         % Making Toroidal Wire Geometry
         wiregeometry = createWireGeometry();
+        % Incorrect variable name
         validGeometry = false;
 
         % Reading In External Geometry
