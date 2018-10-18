@@ -14,18 +14,22 @@ Comming soon...
 
 ## To Do
 * [ ] Refactor
+    * [X] Style
+    * [ ] File structure
+    * [X] Fuction/loop optimization
+    * [ ] Math optimization
 * [ ] Benchmarking
 * [ ] Unit testing
 * [ ] Save data to CSV
 * [ ] Hit detection
 * [ ] Fortran translation
-* [ ] Parallelization?
+* [ ] Parallelization
 * [ ] OpenCL support?
 * [ ] GUI
 * [ ] Packaging
 
 ## Contributers
-* John Galjanic
+* <name>
   * Original simulation
     
 * Sam Kopp (Github Username - MrPilotMan)
