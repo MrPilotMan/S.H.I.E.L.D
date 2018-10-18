@@ -15,26 +15,16 @@ function RadSimOld
         mu          = 4 * pi * 10^-7; % [Tm/A]
         dtheta      = .001 / pi;      % radians
         delt        = 1e-6;           % seconds
+        % Is there a reason this has to be 10e5?
         scale       = 1000;
-        % q         = -1.6*10^-19;    % Coulombs
-        % m         = 9.11*10^-31;    % kg
-        % p0x       = -20;            % meters
-        % p0y       = 0;              % meters
-        % p0z       = 0;              % meters
-        % v0x       = 1;              % m/s
-        % v0y       = 0;              % m/s
-        % v0z       = 0;              % m/s
 
-        % LEAVE AS ZERO
-        % a0x       = 0;              % m/s^2
-        % a0y       = 0;              % m/s^2
-        % a0z       = 0;              % m/s^2
 
     while particlesPlotted < particlesRequested
         tic
         ps  = radiationEnvironmentGenerator(particlesRequested);
         env = ps(particlesPlotted + 1, :);
-        % m = env(1); q = env(2)
+        % m = env(1) 
+        % q = env(2)
         
         % Initial Conditions
         % Uneccesary, but may be beneficial for code readability
@@ -47,22 +37,18 @@ function RadSimOld
         % Incorrect variable name
         validGeometry = false;
 
-        % Reading In External Geometry
-        % wiregeometry = xlsread('FILENAME.xlsx')
-
-        % File in 3 Column Format. Column 1: X Coord. Column 2: Y Coord. Column 3: Z Coord.
-
-        % Allocations are incorrect
-        allB                  = zeros(10e3, 3);
-        allposition           = zeros(10e3, 3);
-        allvelocity           = zeros(10e3, 3);
-        allacceleration       = zeros(10e3, 3);
+        % Allocate memory for allMatricies
+        % Allocations are only estimates, marticies will be resized as needed
+        allB            = zeros(10e3, 3);
+        allposition     = zeros(10e3, 3);
+        allvelocity     = zeros(10e3, 3);
+        allacceleration = zeros(10e3, 3);
         
         allposition(1, :)     = position;
         allvelocity(1, :)     = velocity;
         allacceleration(1, :) = acceleration;
 
-        q_over_m        = env(2)/env(1);
+        q_over_m  = env(2)/env(1);
 
         for iteration = 0:delt:10
             B = zeros(1,3);
@@ -107,17 +93,21 @@ function RadSimOld
             end
 
             % Check if wire geometry fits in view field
-            if abs(positionnext(1)) > abs(scale * totalradius) || ...
-               abs(positionnext(2)) > abs(scale * totalradius) || ...
-               abs(positionnext(3)) > abs(scale * totalradius)
-                fprintf('Outside of Viewing Area\n')
+            viewField = abs(scale * totalradius)
+            if abs(positionnext(1)) > viewField || ...
+               abs(positionnext(2)) > viewField || ...
+               abs(positionnext(3)) > viewField
+                fprintf('Particle outside of view field \n')
                 break
             elseif validGeometry == false
                 validGeometry = true;
-                fprintf('Starting particle simulation...')
+                fprintf('Starting particle simulation... \n')
             end
 
+            % Convert iteration to integer for martrix appending
             allMatrixIndex = uint32(iteration * 10e5 + 2);
+
+            allB(allMatrixIndex, :)            = B;
             allposition(allMatrixIndex, :)     = positionnext;
             allvelocity(allMatrixIndex, :)     = velocitynext;
             allacceleration(allMatrixIndex, :) = accelerationnext;
@@ -125,11 +115,11 @@ function RadSimOld
             position     = positionnext;
             velocity     = velocitynext;
             acceleration = accelerationnext;
-
-            allB(allMatrixIndex, :) = B;
             
-            %fprintf('I: %f\t X: %f\t Y: %f\t Z: %f\n', iteration, position(1), position(2), position(3))
+            % Print statement in uneccesary and imparts useless load
+            % fprintf('I: %f\t X: %f\t Y: %f\t Z: %f\n', iteration, position(1), position(2), position(3))
         end
+
         if validGeometry == true
             allB(1, :) = ones();
             allB = allB(any(allB, 2), :);
@@ -164,12 +154,12 @@ function RadSimOld
             phi = phi + dphi;
         end
 
-        fprintf('Wire Geometry Complete\n')
-        
+        fprintf('Wire geometry complete \n')
     end
 
     function environments = radiationEnvironmentGenerator(environmentsRequested)
         environments = zeros(environmentsRequested, 11);
+        
         function vector = updateVector(algorithm)
             vector = zeros(1, 3);
 
@@ -206,26 +196,12 @@ function RadSimOld
                 end
             end
 
-            % if px > 0 && vx > 0 || px < 0 && vx < 0
-            %   vx = vx * (-1);
-            % end
+            accelerationVector = zeros(1, 3);
 
-            % if py > 0 && vy > 0 || py < 0 && vy < 0
-            %   vy *= -1;
-            % end
-
-            % if pz > 0 && vz > 0 || pz < 0 && vz < 0
-            %   vz *= -1;
-            % end
-
-            accelerationVector = [0, 0, 0];
-
-            line = [mass, charge, ...
-                    positionVector(1), positionVector(2), positionVector(3), ...
-                    velocityVector(1), velocityVector(2), velocityVector(3), ...
-                    accelerationVector(1), accelerationVector(2), accelerationVector(3)];
-
-            environments(o, :) = line;
+            environments(o, :) = [mass, charge, ...
+                                  positionVector(1), positionVector(2), positionVector(3), ...
+                                  velocityVector(1), velocityVector(2), velocityVector(3), ...
+                                  accelerationVector(1), accelerationVector(2), accelerationVector(3)];
         end
     end
 
