@@ -7,14 +7,14 @@ function RadSimOld
     % Need to move plotting into a validity check
     
     % Constraints
-        innerradius = 10;             % meters
-        torusradius = 20;             % meters
-        totalradius = innerradius+torusradius;
+        innerRadius = 10;             % meters
+        torusRadius = 20;             % meters
+        totalradius = innerRadius+torusRadius;
         N           = 100;            % number of turns
         I           = .1;             % A
         mu          = 4 * pi * 10^-7; % [Tm/A]
-        dtheta      = .001 / pi;      % radians
-        delt        = 1e-6;           % seconds
+        dTheta      = .001 / pi;      % radians
+        delta        = 1e-6;           % seconds
         % Is there a reason this has to be 10e5?
         scale       = 1000;
 
@@ -33,38 +33,38 @@ function RadSimOld
         acceleration    = [env(9), env(10), env(11)];
 
         % Making Toroidal Wire Geometry
-        wiregeometry = createWireGeometry();
+        wireGeometry = createWireGeometry();
         % Incorrect variable name
         validGeometry = false;
 
-        % Allocate memory for allMatricies
+        % Preallocate all-Matricies memory
         % Allocations are only estimates, marticies will be resized as needed
         allB            = zeros(10e3, 3);
-        allposition     = zeros(10e3, 3);
-        allvelocity     = zeros(10e3, 3);
-        allacceleration = zeros(10e3, 3);
+        allPosition     = zeros(10e3, 3);
+        allVelocity     = zeros(10e3, 3);
+        allAcceleration = zeros(10e3, 3);
         
-        allposition(1, :)     = position;
-        allvelocity(1, :)     = velocity;
-        allacceleration(1, :) = acceleration;
+        allPosition(1, :)     = position;
+        allVelocity(1, :)     = velocity;
+        allAcceleration(1, :) = acceleration;
 
         q_over_m  = env(2)/env(1);
 
-        for iteration = 0:delt:10
+        for iteration = 0:delta:10
             B = zeros(1,3);
 
             %Calculating B Field
-            for n = 2:size(wiregeometry,1)
-                L   = [wiregeometry(n, 1) - wiregeometry(n - 1, 1), ...
-                       wiregeometry(n, 2) - wiregeometry(n - 1, 2), ...
-                       wiregeometry(n, 3) - wiregeometry(n - 1, 3)];
+            for n = 2:size(wireGeometry,1)
+                L   = [wireGeometry(n, 1) - wireGeometry(n - 1, 1), ...
+                       wireGeometry(n, 2) - wireGeometry(n - 1, 2), ...
+                       wireGeometry(n, 3) - wireGeometry(n - 1, 3)];
 
-                distanceVector = [position(1)-wiregeometry(n,1), ...
-                                  position(2)-wiregeometry(n,2), ...
-                                  position(3)-wiregeometry(n,3)];
+                distanceVector = [position(1)-wireGeometry(n,1), ...
+                                  position(2)-wireGeometry(n,2), ...
+                                  position(3)-wireGeometry(n,3)];
 
-                magdistvec = sqrt(distanceVector(1)^2 + distanceVector(2)^2 + distanceVector(3)^2);
-                db = (mu / (4 * pi)) .* cross(I .* L, distanceVector) ./ magdistvec.^3;
+                distanceVectorMagnitude = sqrt(distanceVector(1)^2 + distanceVector(2)^2 + distanceVector(3)^2);
+                db = (mu / (4 * pi)) .* cross(I .* L, distanceVector) ./ distanceVectorMagnitude.^3;
                 B = B + db;
             end
             
@@ -73,19 +73,19 @@ function RadSimOld
             acceleration(3) = q_over_m * (velocity(1)*B(2) - B(1)*velocity(2));
 
             %ITERATIVE DEPENDENT ON EACH STEP delt-BETTER METHOD
-            velocitynext = [delt * (acceleration(1)) + velocity(1), ...
-                            delt * (acceleration(2)) + velocity(2), ...
-                            delt * (acceleration(3)) + velocity(3)];
+            nextPosition = [nextVelocity(1) * delta/2 + position(1), ...
+                            nextVelocity(2) * delta/2 + position(2), ...
+                            nextVelocity(3) * delta + position(3)];
+            
+            nextVelocity = [delta * (acceleration(1)) + velocity(1), ...
+                            delta * (acceleration(2)) + velocity(2), ...
+                            delta * (acceleration(3)) + velocity(3)];
 
-            positionnext = [velocitynext(1) * delt/2 + position(1), ...
-                            velocitynext(2) * delt/2 + position(2), ...
-                            velocitynext(3) * delt + position(3)];
-
-            accelerationnext = acceleration;
+            nextAcceleration = acceleration;
 
             % Check if particle hit the spacecraft
-            if (positionnext(3) >= -innerradius) && (positionnext(3) <= innerradius)
-                if sqrt(positionnext(1)^2 + positionnext(2)^2) <= innerradius 
+            if (nextPosition(3) >= -innerRadius) && (nextPosition(3) <= innerRadius)
+                if sqrt(nextPosition(1)^2 + nextPosition(2)^2) <= innerRadius 
                     fprintf('Hit the Craft\n')
                     hits = hits + 1;
                     break
@@ -93,10 +93,10 @@ function RadSimOld
             end
 
             % Check if wire geometry fits in view field
-            viewField = abs(scale * totalradius)
-            if abs(positionnext(1)) > viewField || ...
-               abs(positionnext(2)) > viewField || ...
-               abs(positionnext(3)) > viewField
+            viewField = abs(scale * totalradius);
+            if abs(nextPosition(1)) > viewField || ...
+               abs(nextPosition(2)) > viewField || ...
+               abs(nextPosition(3)) > viewField
                 fprintf('Particle outside of view field \n')
                 break
             elseif validGeometry == false
@@ -108,13 +108,13 @@ function RadSimOld
             allMatrixIndex = uint32(iteration * 10e5 + 2);
 
             allB(allMatrixIndex, :)            = B;
-            allposition(allMatrixIndex, :)     = positionnext;
-            allvelocity(allMatrixIndex, :)     = velocitynext;
-            allacceleration(allMatrixIndex, :) = accelerationnext;
+            allPosition(allMatrixIndex, :)     = nextPosition;
+            allVelocity(allMatrixIndex, :)     = nextVelocity;
+            allAcceleration(allMatrixIndex, :) = nextAcceleration;
 
-            position     = positionnext;
-            velocity     = velocitynext;
-            acceleration = accelerationnext;
+            position     = nextPosition;
+            velocity     = nextVelocity;
+            acceleration = nextAcceleration;
             
             % Print statement in uneccesary and imparts useless load
             % fprintf('I: %f\t X: %f\t Y: %f\t Z: %f\n', iteration, position(1), position(2), position(3))
@@ -124,7 +124,7 @@ function RadSimOld
             allB(1, :) = ones();
             allB = allB(any(allB, 2), :);
             allB(1, :) = zeros();
-            allposition = allposition(any(allposition, 2), :);
+            allPosition = allPosition(any(allPosition, 2), :);
             
             toc
             particlesPlotted = particlesPlotted + 1;
@@ -134,24 +134,24 @@ function RadSimOld
     end
 
     function geometry = createWireGeometry()
-        phimax = asin(((torusradius - innerradius)/2) / (innerradius + (torusradius - innerradius)/2));
-        dphi = N * dtheta;
-        phi = pi/2 - phimax;
+        phi_max = asin(((torusRadius - innerRadius)/2) / (innerRadius + (torusRadius - innerRadius)/2));
+        dPhi = N * dTheta;
+        phi = pi/2 - phi_max;
 
         % Preallocate array memory
-        geometry = zeros(uint16((2 * pi)/dtheta), 3);
+        geometry = zeros(uint16((2 * pi)/dTheta), 3);
 
         i = 1;
-        for theta = 0:dtheta:(2 * pi)
+        for theta = 0:dTheta:(2 * pi)
             xyz = [0, 0, 0];
-            xyz(1) = (torusradius + innerradius * cos(phi)) * cos(theta);
-            xyz(2) = (torusradius + innerradius * cos(phi)) * sin(theta);
-            xyz(3) = innerradius * sin(phi);
+            xyz(1) = (torusRadius + innerRadius * cos(phi)) * cos(theta);
+            xyz(2) = (torusRadius + innerRadius * cos(phi)) * sin(theta);
+            xyz(3) = innerRadius * sin(phi);
             
             geometry(i, :) = xyz;
             
             i = i + 1;
-            phi = phi + dphi;
+            phi = phi + dPhi;
         end
 
         fprintf('Wire geometry complete \n')
@@ -210,17 +210,17 @@ function RadSimOld
         figure()
         
         % Create wire geometry
-        plot3(wiregeometry(:, 1), wiregeometry(:, 2), wiregeometry(:, 3),'Color','b')
+        plot3(wireGeometry(:, 1), wireGeometry(:, 2), wireGeometry(:, 3),'Color','b')
         hold on
         
         % Velocity plot
-        quiver3(allposition(:, 1), allposition(:, 2), allposition(:, 3), allB(:, 1), allB(:, 2), allB(:, 3), 'MaxHeadSize', 2)
+        quiver3(allPosition(:, 1), allPosition(:, 2), allPosition(:, 3), allB(:, 1), allB(:, 2), allB(:, 3), 'MaxHeadSize', 2)
         
         % Plot particel path
-        plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3))
+        plot3(allPosition(:, 1), allPosition(:, 2), allPosition(:, 3))
 
         % Plot Particle
-        plot3(allposition(:, 1), allposition(:, 2), allposition(:, 3), '*')
+        plot3(allPosition(:, 1), allPosition(:, 2), allPosition(:, 3), '*')
         
         % Clean up
         grid on
