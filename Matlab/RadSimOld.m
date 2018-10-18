@@ -14,7 +14,7 @@ function RadSimOld
         I           = .1;             % A
         mu          = 4 * pi * 10^-7; % [Tm/A]
         dTheta      = .001 / pi;      % radians
-        delta        = 1e-6;           % seconds
+        delta       = 1e-6;           % seconds
         % Is there a reason this has to be 10e5?
         scale       = 1000;
 
@@ -25,6 +25,7 @@ function RadSimOld
         env = ps(particlesPlotted + 1, :);
         % m = env(1) 
         % q = env(2)
+        q_over_m  = env(2)/env(1);
         
         % Initial Conditions
         % Uneccesary, but may be beneficial for code readability
@@ -48,13 +49,11 @@ function RadSimOld
         allVelocity(1, :)     = velocity;
         allAcceleration(1, :) = acceleration;
 
-        q_over_m  = env(2)/env(1);
-
         for iteration = 0:delta:10
             B = zeros(1,3);
 
             %Calculating B Field
-            for n = 2:size(wireGeometry,1)
+            for n = 2:size(wireGeometry, 1)
                 L   = [wireGeometry(n, 1) - wireGeometry(n - 1, 1), ...
                        wireGeometry(n, 2) - wireGeometry(n - 1, 2), ...
                        wireGeometry(n, 3) - wireGeometry(n - 1, 3)];
@@ -68,9 +67,9 @@ function RadSimOld
                 B = B + db;
             end
             
-            acceleration(1) = q_over_m * (velocity(2)*B(3) - B(2)*velocity(3));
+            acceleration(1) = q_over_m *  (velocity(2)*B(3) - B(2)*velocity(3));
             acceleration(2) = q_over_m * -(velocity(1)*B(3) - B(1)*velocity(3));
-            acceleration(3) = q_over_m * (velocity(1)*B(2) - B(1)*velocity(2));
+            acceleration(3) = q_over_m *  (velocity(1)*B(2) - B(1)*velocity(2));
 
             %ITERATIVE DEPENDENT ON EACH STEP delt-BETTER METHOD
             nextPosition = [nextVelocity(1) * delta/2 + position(1), ...
@@ -183,7 +182,7 @@ function RadSimOld
 
         for o = 1:environmentsRequested
             charge = randi([-3, 3]);
-            mass = rand * 3.952562528e-25;
+            mass   = rand * 3.952562528e-25;
 
             positionVector = updateVector('p');
             velocityVector = updateVector('v');
