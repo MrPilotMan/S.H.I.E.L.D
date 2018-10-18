@@ -26,6 +26,7 @@ function RadSimOld
         % m = env(1) 
         % q = env(2)
         q_over_m  = env(2)/env(1);
+        particleInViewField = false;
         
         % Initial Conditions
         % Uneccesary, but may be beneficial for code readability
@@ -35,8 +36,8 @@ function RadSimOld
 
         % Making Toroidal Wire Geometry
         wireGeometry = createWireGeometry();
-        % Incorrect variable name
-        validGeometry = false;
+
+
 
         % Preallocate all-Matricies memory
         % Allocations are only estimates, marticies will be resized as needed
@@ -98,8 +99,8 @@ function RadSimOld
                abs(nextPosition(3)) > viewField
                 fprintf(' - Particle outside of view field \n')
                 break
-            elseif validGeometry == false
-                validGeometry = true;
+            elseif particleInViewField == false
+                particleInViewField = true;
                 fprintf('\nStarting particle simulation... \n')
             end
 
@@ -119,7 +120,7 @@ function RadSimOld
             % fprintf('I: %f\t X: %f\t Y: %f\t Z: %f\n', iteration, position(1), position(2), position(3))
         end
 
-        if validGeometry == true
+        if particleInViewField == true
             % Removes any unused rows
             % Needed so collapse function will not remove first row
             allB(1, :) = ones();
