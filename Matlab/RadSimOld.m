@@ -9,7 +9,7 @@ function RadSimOld
     % Constraints
         innerRadius = 10;             % meters
         torusRadius = 20;             % meters
-        totalradius = innerRadius+torusRadius;
+        totalradius = innerRadius + torusRadius;
         N           = 100;            % number of turns
         I           = .1;             % A
         mu          = 4 * pi * 10^-7; % [Tm/A]
@@ -17,6 +17,7 @@ function RadSimOld
         delta       = 1e-6;           % seconds
         % Is there a reason this has to be 10e5?
         scale       = 1000;
+        fourPi = 4 * pi;
 
 
     while particlesPlotted < particlesRequested
@@ -63,8 +64,7 @@ function RadSimOld
                                   position(2)-wireGeometry(n,2), ...
                                   position(3)-wireGeometry(n,3)];
 
-                distanceVectorMagnitude = sqrt(distanceVector(1)^2 + distanceVector(2)^2 + distanceVector(3)^2);
-                db = (mu / (4 * pi)) .* cross(I .* L, distanceVector) ./ distanceVectorMagnitude.^3;
+                db = (mu / fourPi) .* cross(I .* L, distanceVector) ./ norm(distanceVector).^3;
                 B = B + db;
             end
             
