@@ -72,13 +72,13 @@ function RadSimOld
             acceleration(3) = q_over_m *  (velocity(1)*B(2) - B(1)*velocity(2));
 
             %ITERATIVE DEPENDENT ON EACH STEP delt-BETTER METHOD
-            nextPosition = [nextVelocity(1) * delta/2 + position(1), ...
-                            nextVelocity(2) * delta/2 + position(2), ...
-                            nextVelocity(3) * delta + position(3)];
-            
             nextVelocity = [delta * (acceleration(1)) + velocity(1), ...
                             delta * (acceleration(2)) + velocity(2), ...
                             delta * (acceleration(3)) + velocity(3)];
+            
+            nextPosition = [nextVelocity(1) * delta/2 + position(1), ...
+                            nextVelocity(2) * delta/2 + position(2), ...
+                            nextVelocity(3) * delta + position(3)];
 
             nextAcceleration = acceleration;
 
@@ -91,19 +91,19 @@ function RadSimOld
                 end
             end
 
-            % Check if wire geometry fits in view field
+            % Check if particle is still in view field
             viewField = abs(scale * totalradius);
             if abs(nextPosition(1)) > viewField || ...
                abs(nextPosition(2)) > viewField || ...
                abs(nextPosition(3)) > viewField
-                fprintf('Particle outside of view field \n')
+                fprintf(' - Particle outside of view field \n')
                 break
             elseif validGeometry == false
                 validGeometry = true;
-                fprintf('Starting particle simulation... \n')
+                fprintf('\nStarting particle simulation... \n')
             end
 
-            % Convert iteration to integer for martrix appending
+            % Convert iteration to integer index for appending to martrix
             allMatrixIndex = uint32(iteration * 10e5 + 2);
 
             allB(allMatrixIndex, :)            = B;
@@ -120,40 +120,46 @@ function RadSimOld
         end
 
         if validGeometry == true
+            % Removes any unused rows
+            % Needed so collapse function will not remove first row
             allB(1, :) = ones();
             allB = allB(any(allB, 2), :);
             allB(1, :) = zeros();
             allPosition = allPosition(any(allPosition, 2), :);
             
-            toc
             particlesPlotted = particlesPlotted + 1;
-            k = particlesPlotted;
             plotParticle()
+            toc
+            fprintf('Simulation finished, particle plotted \n\n')
         end
     end
 
     function geometry = createWireGeometry()
-        phi_max = asin(((torusRadius - innerRadius)/2) / (innerRadius + (torusRadius - innerRadius)/2));
-        dPhi = N * dTheta;
-        phi = pi/2 - phi_max;
+        phi_max            = asin(((torusRadius - innerRadius)/2) / (innerRadius + (torusRadius - innerRadius)/2));
+        dPhi               = N * dTheta;
+        phi                = pi/2 - phi_max;
+        innerRadius_cosPhi = innerRadius * cos(phi);
+        sinPhi             = sin(phi);
 
         % Preallocate array memory
         geometry = zeros(uint16((2 * pi)/dTheta), 3);
 
         i = 1;
+        %tic
         for theta = 0:dTheta:(2 * pi)
-            xyz = [0, 0, 0];
-            xyz(1) = (torusRadius + innerRadius * cos(phi)) * cos(theta);
-            xyz(2) = (torusRadius + innerRadius * cos(phi)) * sin(theta);
-            xyz(3) = innerRadius * sin(phi);
+            xyz = zeros(1,3);
+            xyz(1) = (torusRadius + innerRadius_cosPhi * cos(theta));
+            xyz(2) = (torusRadius + innerRadius_cosPhi * sin(theta));
+            xyz(3) = innerRadius * sinPhi;
             
             geometry(i, :) = xyz;
             
             i = i + 1;
             phi = phi + dPhi;
         end
+        %toc
 
-        fprintf('Wire geometry complete \n')
+        fprintf('Wire geometry complete')
     end
 
     function environments = radiationEnvironmentGenerator(environmentsRequested)
