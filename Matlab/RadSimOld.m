@@ -13,11 +13,9 @@ function RadSimOld
         mu          = 4 * pi * 10^-7; % [Tm/A]
         dTheta      = .001 / pi;      % radians
         delta       = 1e-6;           % seconds
-        % Is there a reason this has to be 10e5?
         scale       = 10000;
         fourPi      = 4 * pi;
         allTocs     = 0;
-
 
     while particlesPlotted < particlesRequested
         tic
@@ -36,8 +34,6 @@ function RadSimOld
 
         % Making Toroidal Wire Geometry
         wireGeometry = createWireGeometry();
-
-
 
         % Preallocate all-Matricies memory
         % Allocations are only estimates, marticies will be resized as needed
@@ -73,20 +69,14 @@ function RadSimOld
             acceleration(3) = q_over_m *  (velocity(1)*B(2) - B(1)*velocity(2));
 
             %ITERATIVE DEPENDENT ON EACH STEP delt-BETTER METHOD
-            % Should be refactored to operate directly on position, vector, and acceleration vectors
-            nextVelocity = [delta * (acceleration(1)) + velocity(1), ...
-                            delta * (acceleration(2)) + velocity(2), ...
-                            delta * (acceleration(3)) + velocity(3)];
+            velocity = velocity + delta * acceleration;
             
-            nextPosition = [nextVelocity(1) * delta/2 + position(1), ...
-                            nextVelocity(2) * delta/2 + position(2), ...
-                            nextVelocity(3) * delta + position(3)];
-
-            nextAcceleration = acceleration;
+            position = position + (delta/2) * velocity;
+            position(3) = position(3) + velocity(3) * (delta/2);
 
             % Check if particle hit the spacecraft
-            if (nextPosition(3) >= -innerRadius) && (nextPosition(3) <= innerRadius)
-                if sqrt(nextPosition(1)^2 + nextPosition(2)^2) <= innerRadius 
+            if (position(3) >= -innerRadius) && (position(3) <= innerRadius)
+                if sqrt(position(1)^2 + position(2)^2) <= innerRadius 
                     fprintf('Hit the Craft\n')
                     hits = hits + 1;
                     break
@@ -95,9 +85,9 @@ function RadSimOld
 
             % Check if particle is still in view field
             viewField = abs(scale * totalradius);
-            if abs(nextPosition(1)) > viewField || ...
-               abs(nextPosition(2)) > viewField || ...
-               abs(nextPosition(3)) > viewField
+            if abs(position(1)) > viewField || ...
+               abs(position(2)) > viewField || ...
+               abs(position(3)) > viewField
                 fprintf(' - Particle outside of view field \n')
                 break
             elseif particleInViewField == false
@@ -109,13 +99,9 @@ function RadSimOld
             allMatrixIndex = uint16(iteration * 10e5 + 2);
 
             allB(allMatrixIndex, :)            = B;
-            allPosition(allMatrixIndex, :)     = nextPosition;
-            allVelocity(allMatrixIndex, :)     = nextVelocity;
-            allAcceleration(allMatrixIndex, :) = nextAcceleration;
-
-            position     = nextPosition;
-            velocity     = nextVelocity;
-            acceleration = nextAcceleration;
+            allPosition(allMatrixIndex, :)     = position;
+            allVelocity(allMatrixIndex, :)     = velocity;
+            allAcceleration(allMatrixIndex, :) = acceleration;
             
             % Print statement in uneccesary and imparts useless load
             % fprintf('I: %f\t X: %f\t Y: %f\t Z: %f\n', iteration, position(1), position(2), position(3))
@@ -136,6 +122,7 @@ function RadSimOld
             fprintf('Simulation finished, particle plotted \n\n')
         end
     end
+    
     function geometry = createWireGeometry()
         phi_max            = asin(((torusRadius - innerRadius)/2) / (innerRadius + (torusRadius - innerRadius)/2));
         dPhi               = N * dTheta;
@@ -145,7 +132,6 @@ function RadSimOld
         geometry = zeros(uint16((2 * pi)/dTheta), 3);
 
         i = 1;
-        %tic
         for theta = 0:dTheta:(2 * pi)
             xyz = zeros(1,3);
             xyz(1) = (torusRadius + innerRadius * cos(phi)) * cos(theta);
@@ -157,8 +143,6 @@ function RadSimOld
             i = i + 1;
             phi = phi + dPhi;
         end
-        %toc
-
         fprintf('Wire geometry complete')
     end
 
@@ -178,8 +162,6 @@ function RadSimOld
               % elseif algorithm == 'a'
                     % accelerationAlgorithm = (2 * 10000 * rand) - 10000;
                     % value = accelerationAlgorithm
-                else
-                    fprintf('unkown alogrithm');
                 end
 
                 vector(i) = value;
@@ -234,4 +216,6 @@ function RadSimOld
         ylabel('Y')
         zlabel('Z')
     end
+averageToc = allTocs ./ particlesRequested
+fprintf('Average particle simulation time: %6.3f seconds', averageToc)
 end
