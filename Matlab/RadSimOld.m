@@ -3,8 +3,6 @@ function RadSimOld
     particlesPlotted = 0;
     particlesRequested = 100;
     hits = 0;
-
-    % Need to move plotting into a validity check
     
     % Constraints
         innerRadius = 10;             % meters
@@ -16,8 +14,9 @@ function RadSimOld
         dTheta      = .001 / pi;      % radians
         delta       = 1e-6;           % seconds
         % Is there a reason this has to be 10e5?
-        scale       = 1000;
-        fourPi = 4 * pi;
+        scale       = 10000;
+        fourPi      = 4 * pi;
+        allTocs     = 0;
 
 
     while particlesPlotted < particlesRequested
@@ -42,6 +41,7 @@ function RadSimOld
 
         % Preallocate all-Matricies memory
         % Allocations are only estimates, marticies will be resized as needed
+        % May be able to calculate matrix size using position. Might be too costly of a calculation
         allB            = zeros(10e3, 3);
         allPosition     = zeros(10e3, 3);
         allVelocity     = zeros(10e3, 3);
@@ -73,6 +73,7 @@ function RadSimOld
             acceleration(3) = q_over_m *  (velocity(1)*B(2) - B(1)*velocity(2));
 
             %ITERATIVE DEPENDENT ON EACH STEP delt-BETTER METHOD
+            % Should be refactored to operate directly on position, vector, and acceleration vectors
             nextVelocity = [delta * (acceleration(1)) + velocity(1), ...
                             delta * (acceleration(2)) + velocity(2), ...
                             delta * (acceleration(3)) + velocity(3)];
@@ -105,7 +106,7 @@ function RadSimOld
             end
 
             % Convert iteration to integer index for appending to martrix
-            allMatrixIndex = uint32(iteration * 10e5 + 2);
+            allMatrixIndex = uint16(iteration * 10e5 + 2);
 
             allB(allMatrixIndex, :)            = B;
             allPosition(allMatrixIndex, :)     = nextPosition;
@@ -130,17 +131,15 @@ function RadSimOld
             
             particlesPlotted = particlesPlotted + 1;
             plotParticle()
-            toc
+            thisToc = toc
+            allTocs = allTocs + thisToc;
             fprintf('Simulation finished, particle plotted \n\n')
         end
     end
-
     function geometry = createWireGeometry()
         phi_max            = asin(((torusRadius - innerRadius)/2) / (innerRadius + (torusRadius - innerRadius)/2));
         dPhi               = N * dTheta;
         phi                = pi/2 - phi_max;
-        innerRadius_cosPhi = innerRadius * cos(phi);
-        sinPhi             = sin(phi);
 
         % Preallocate array memory
         geometry = zeros(uint16((2 * pi)/dTheta), 3);
@@ -149,9 +148,9 @@ function RadSimOld
         %tic
         for theta = 0:dTheta:(2 * pi)
             xyz = zeros(1,3);
-            xyz(1) = (torusRadius + innerRadius_cosPhi * cos(theta));
-            xyz(2) = (torusRadius + innerRadius_cosPhi * sin(theta));
-            xyz(3) = innerRadius * sinPhi;
+            xyz(1) = (torusRadius + innerRadius * cos(phi)) * cos(theta);
+            xyz(2) = (torusRadius + innerRadius * cos(phi)) * sin(theta);
+            xyz(3) = innerRadius * sin(phi);
             
             geometry(i, :) = xyz;
             

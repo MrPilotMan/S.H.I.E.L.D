@@ -5,6 +5,7 @@ close all
 particles = 100;
 hits = 0;
 for k = 1:100
+    tic
 %***************CONSTRAINTS**********************
 innerradius=10; %m
 torusradius=20; %m
@@ -26,7 +27,7 @@ mu=4*pi*10^-7; %[Tm/A]
 % a0z=0;%m/s^2
 dtheta=.001/pi; %radians
 delt=1e-6; %s
-scale=100000;
+scale=10000;
 
 k
 ps = Radiation_Environment_Generator(particles);
@@ -159,7 +160,7 @@ grid minor
 xlabel('X')
 ylabel('Y')
 zlabel('Z')
-
+toc
 end
     function environments = Radiation_Environment_Generator(particles)
         for o=1:particles
