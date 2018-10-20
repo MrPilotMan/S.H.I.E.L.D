@@ -1,4 +1,4 @@
-<img align="right" width="120" height="120" title="Burst Logo" src="https://raw.githubusercontent.com/MrPilotMan/RadSim/master/Embry-Riddle_Aeronautical_University_Seal.png?token=Af-nljz_KQtFsJw03LrQ5G0AUbtcKaTrks5bzUiqwA%3D%3D" />
+<img align="right" width="120" height="120" title="ERAU Logo" src="https://raw.githubusercontent.com/MrPilotMan/RadSim/master/Embry-Riddle_Aeronautical_University_Seal.png?token=Af-nljz_KQtFsJw03LrQ5G0AUbtcKaTrks5bzUiqwA%3D%3D" />
 
 # RadSim
 **University:** Embry-Riddle Aeronautical University
@@ -32,7 +32,7 @@ Comming soon...
 * [ ] Packaging
 
 ## Contributers
-* <name>
+* Brennan McCann
   * Original simulation
     
 * Sam Kopp (Github Username - MrPilotMan)
