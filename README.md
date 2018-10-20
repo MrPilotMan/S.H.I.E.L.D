@@ -17,13 +17,16 @@ Comming soon...
     * [X] Style
     * [ ] File structure
     * [X] Fuction/loop optimization
-    * [ ] Math optimization
+    * [X] Math optimization
 * [ ] Benchmarking
+   * [X] Timing
+   * [ ] Plotting results
+   * [ ] Save result
+* [ ] Parallelization
+* [ ] Hit detection
 * [ ] Unit testing
 * [ ] Save data to CSV
-* [ ] Hit detection
 * [ ] Fortran translation
-* [ ] Parallelization
 * [ ] OpenCL support?
 * [ ] GUI
 * [ ] Packaging
@@ -33,5 +36,5 @@ Comming soon...
   * Original simulation
     
 * Sam Kopp (Github Username - MrPilotMan)
-  * Refactor
+  * Refactor/optimization
   * Fortran translation
