@@ -1,7 +1,7 @@
 function RadSimOld
     
     particlesPlotted = 0;
-    particlesRequested = 100;
+    particlesRequested = 20;
     hits = 0;
     
     % Constraints
@@ -13,7 +13,7 @@ function RadSimOld
         mu          = 4 * pi * 10^-7; % [Tm/A]
         dTheta      = .001 / pi;      % radians
         delta       = 1e-6;           % seconds
-        scale       = 10000;
+        scale       = 5000;
         fourPi      = 4 * pi;
         allTocs     = 0;
 
@@ -92,7 +92,7 @@ function RadSimOld
                 break
             elseif particleInViewField == false
                 particleInViewField = true;
-                fprintf('\nStarting particle simulation... \n')
+                fprintf('\nStarting simulation: %3.0f \nTotal simulation time %7.3f seconds \n', uint8(particlesPlotted + 1), allTocs)
             end
 
             % Convert iteration to integer index for appending to martrix
@@ -103,7 +103,7 @@ function RadSimOld
             allVelocity(allMatrixIndex, :)     = velocity;
             allAcceleration(allMatrixIndex, :) = acceleration;
             
-            % Print statement in uneccesary and imparts useless load
+            % Print statement in unnecessary and imparts useless load
             % fprintf('I: %f\t X: %f\t Y: %f\t Z: %f\n', iteration, position(1), position(2), position(3))
         end
 
@@ -217,5 +217,5 @@ function RadSimOld
         zlabel('Z')
     end
 averageToc = allTocs ./ particlesRequested
-fprintf('Average particle simulation time: %6.3f seconds', averageToc)
+fprintf('Average particle simulation time: %7.3f seconds', averageToc)
 end
