@@ -13,11 +13,10 @@ torusRadius        = 20;   % meters
 allTocs            = 0;
 
 % Main
+wireGeometry = generateWireGeometry(innerRadius, torusRadius);
+
 while particlesPlotted < particlesRequested
 	tic
-
-	% See if we can generate wire geometry only once
-	wireGeometry = generateWireGeometry(innerRadius, torusRadius);
 	
 	fprintf('\nStarting simulation: %3.0f \nTotal simulation time %7.3f seconds \n', uint8(particlesPlotted + 1), allTocs)
 	
@@ -27,6 +26,9 @@ while particlesPlotted < particlesRequested
 	thisToc = toc
     allTocs = allTocs + thisToc;
 end
+
+averageToc = allTocs ./ particlesRequested
+fprintf('Average particle simulation time: %7.3f seconds', averageToc)
 
 % Create environment
 function environment = generateRadiationEnvironment()
