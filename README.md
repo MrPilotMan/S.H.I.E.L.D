@@ -10,8 +10,8 @@
 **Objective:** Simulate particle interaction with an electro-magnetic field radiation shield on a spacecraft.
 
 ## Instructions on running
-1. Download the latest release.
-2. Open `RadSim.m` in MatLab.
+1. Download the [latest release](https://github.com/MrPilotMan/RadSim/releases) file titled `RadSim.m.zip`.
+2. Unzip and open `RadSim.m` in MatLab.
 3. Adjust `requestedParticles`, `scale`, and `delta` variables as desired.
    1. Setting `requestedParticles` higher will demand significantly more RAM to display the plots. It is advisable to run more simulations with a lower `requestedParticle` size.
    2. Making `scale` larger does not produce better graphs and will significantly slow down each particles simualtion.
