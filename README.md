@@ -24,7 +24,7 @@
 #### Real World Benchmarks
 | Machine                                       | Version | Scale | Delta           | Average Particle Time | Parallel |
 |-----------------------------------------------|---------|-------|-----------------|-----------------------|----------|
-| MacBook Pro, 2.9GHz i9, 32GB RAM, macOS 10.14 | 1.0     | 5000  | 1e<sup>-6</sup> | 10 seconds            | No       |
+| MacBook Pro, 2.9GHz i9, 32GB RAM, macOS 10.14 | 1.0     | 5000  | 1e<sup>-6</sup> | 13 seconds            | No       |
 | *school computer*                             | 1.0     | 5000  | 1e<sup>-6</sup> | *time*                | No       |
 
 *When adding rows to the above table, please order your rows by version (new &rightarrow; old), time (fast &rightarrow; slow), delta (small &rightarrow; large), and scale (large &rightarrow; small), in that order.*
