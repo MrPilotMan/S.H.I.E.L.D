@@ -10,7 +10,7 @@
 **Objective:** Simulate particle interaction with an electro-magnetic field radiation shield on a spacecraft.
 
 ## Instructions on running
-1. Download `master` branch.
+1. Download the latest release.
 2. Open `RadSim.m` in MatLab.
 3. Adjust `requestedParticles`, `scale`, and `delta` variables as desired.
    1. Setting `requestedParticles` higher will demand significantly more RAM to display the plots. It is advisable to run more simulations with a lower `requestedParticle` size.
@@ -27,13 +27,13 @@
 | MacBook Pro, 2.9GHz i9, 32GB RAM, macOS 10.14 | 1.0     | 5000  | 1e<sup>-6</sup> | 10 seconds            | No       |
 | *school computer*                             | 1.0     | 5000  | 1e<sup>-6</sup> | *time*                | No       |
 
-When adding rows to the above table, please order your rows by version (new &rightarrow; old), time (fast &rightarrow; slow), delta (small &rightarrow; large), and scale (large &rightarrow; small), in that order.
+*When adding rows to the above table, please order your rows by version (new &rightarrow; old), time (fast &rightarrow; slow), delta (small &rightarrow; large), and scale (large &rightarrow; small), in that order.*
 
 #### Version Benchmarks
-| Version | Total Simulation Time | Improvement | Notes                                          |
-|---------|-----------------------|-------------|------------------------------------------------|
-| 0       |                       | N/A         | Initial sim did not produce 100 valid plots.   |
-| 1.0     |                       |             | Refactor and memory/compute optimization.      |
+| Version | Total Time | Particle Time | Memory per Particle | Particle Improvement | Memory Improvement | Notes            
+|---------|------------|---------------|---------------------|----------------------|--------------------|----------
+| 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | N/A                  | N/A            | Only produced 19 plots. 
+| 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 832%                 | 349%   |Refactor & RAM/CPU optimization.
 
 ##### Standard Benchmarking Parameters
 ```
@@ -47,7 +47,7 @@ delta = 1e^-6
 ```
 
 
-## To Do
+## To Do (No real order)
 * [ ] Refactor
     * [X] Style
     * [ ] File structure
@@ -55,16 +55,15 @@ delta = 1e^-6
     * [X] Math optimization
 * [ ] Benchmarking
    * [X] Timing
+   * [X] Version Benchmarking
    * [ ] Plotting results
    * [ ] Save result
 * [ ] Parallelization
 * [ ] Hit detection
 * [ ] Unit testing
 * [ ] Save data to CSV
-* [ ] Fortran translation
+* [ ] Translation
 * [ ] OpenCL support?
-* [ ] GUI
-* [ ] Packaging
 
 ## Contributers
 * Brennan McCann
