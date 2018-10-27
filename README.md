@@ -14,7 +14,7 @@
 2. Unzip and open `RadSim.m` in MatLab.
 3. Adjust `requestedParticles`, `scale`, and `delta` variables as desired.
    1. Setting `requestedParticles` higher will demand significantly more RAM to display the plots. It is advisable to run more simulations with a lower `requestedParticle` size.
-   2. Making `scale` larger does not produce better graphs and will significantly slow down each particles simualtion.
+   2. Making `scale` larger does not produce better graphs and will significantly slow down each particles simulation.
    3. Setting `delta` to a lower numeric value will increase the granularity of the simulation, but results in a linear time increase.
 4. Save and run the simulation.
    1. On termination or completion, MatLab will display the plots.
@@ -30,10 +30,11 @@
 *When adding rows to the above table, please order your rows by version (new &rightarrow; old), time (fast &rightarrow; slow), delta (small &rightarrow; large), and scale (large &rightarrow; small), in that order.*
 
 #### Version Benchmarks
-| Version | Total Time | Particle Time | Memory per Particle | Particle Improvement | Memory Improvement | Notes            
-|---------|------------|---------------|---------------------|----------------------|--------------------|----------
+| Version | Total Time | Particle Time | Memory per Particle | Particle Improvement | Memory Improvement | Notes   |         
+|---------|------------|---------------|---------------------|----------------------|--------------------|---------|
 | 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | N/A                  | N/A            | Only produced 19 plots. 
 | 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 832%                 | 349%   |Refactor & RAM/CPU optimization.
+| 1.1     |            |               |                     |                      |        |
 
 ##### Standard Benchmarking Parameters
 ```
@@ -51,24 +52,23 @@ delta = 1e^-6
 * [ ] Refactor
     * [X] Style
     * [ ] File structure
-    * [X] Fuction/loop optimization
+    * [X] Function/loop optimization
     * [X] Math optimization
-* [ ] Benchmarking
+* [X] Benchmarking
    * [X] Timing
    * [X] Version Benchmarking
-   * [ ] Plotting results
-   * [ ] Save result
+* [ ] CSV
+   * [X] Save data to CSV
+   * [ ] Read in wire geometry from CSV
+   * [ ] CSV particle simulation interpreter & plotter
 * [ ] Parallelization
 * [ ] Hit detection
-* [ ] Unit testing
-* [ ] Save data to CSV
 * [ ] Translation
-* [ ] OpenCL support?
 
-## Contributers
+## Contributors
 * Brennan McCann
   * Original simulation
     
 * Sam Kopp (Github Username - MrPilotMan)
   * Refactor/optimization
-  * Fortran translation
+  * Use CSV for collecting and loading data

@@ -1,27 +1,33 @@
 % Global variables
-particlesPlotted   = 0;
+particlesSimualted   = 0;
 particlesRequested = 20;
 
 delta              = 1e-6; % seconds
-scale              = 5000;
+scale              = 5000;  % meters
 
 innerRadius        = 10;   % meters
 torusRadius        = 20;   % meters
 
 %hits              = 0;
 %misses            = 0;
+
+%runLetter          = 'a';
 allTocs            = 0;
 
 % Main
 wireGeometry = generateWireGeometry(innerRadius, torusRadius);
+writeToCSV('wireGeometry.txt', wireGeometry)
 
-while particlesPlotted < particlesRequested
+while particlesSimualted < particlesRequested
 	tic
 	
-	fprintf('\nStarting simulation: %3.0f \nTotal simulation time %7.3f seconds \n', uint8(particlesPlotted + 1), allTocs)
+	fprintf('\nStarting simulation: %3.0f \nTotal simulation time %7.3f seconds \n', uint8(particlesSimualted + 1), allTocs)
 	
-	simulateParticle(wireGeometry, innerRadius, torusRadius, delta, scale);
-	particlesPlotted = particlesPlotted + 1;
+	particleSimulation = simulateParticle(wireGeometry, innerRadius, torusRadius, delta, scale);
+	particlesSimualted = particlesSimualted + 1;
+    
+    %fileName = [runLetter num2str(particlesSimualted) '-particleMatrix.txt'];
+    %writeToCSV(fileName, particleSimulation)
 
 	thisToc = toc
     allTocs = allTocs + thisToc;
@@ -173,7 +179,7 @@ function particleSimulation = simulateParticle(wireGeometry, innerRadius, torusR
 		    if abs(position(1)) > viewField || ...
 		       abs(position(2)) > viewField || ...
 		       abs(position(3)) > viewField
-		        fprintf(' - Particle outside of view field \n')
+		        % fprintf(' - Particle outside of view field \n')
 		        break
 		    elseif particleInViewField == false
 		        particleInViewField = true;
@@ -200,9 +206,15 @@ function particleSimulation = simulateParticle(wireGeometry, innerRadius, torusR
 		    allPosition = allPosition(any(allPosition, 2), :);
 		    
 		    plotParticle(wireGeometry, allPosition, allB)
+            particleSimulation = [allPosition allB];
 		    fprintf('Simulation finished, particle plotted \n\n')
 		end
     end
+end
+
+% Write to CSV file
+function writeToCSV(fileName, matrix)
+    csvwrite(fileName, matrix)
 end
 
 % Plot

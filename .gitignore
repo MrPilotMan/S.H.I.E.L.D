@@ -2,3 +2,5 @@
 .DS_Store
 Matlab/RadSimOld.m~
 *.m~
+Matlab/particleMatrix.txt
+Matlab/wireGeometry.txt
