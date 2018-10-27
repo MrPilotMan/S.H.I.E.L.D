@@ -49,9 +49,9 @@ delta = 1e^-6
 
 
 ## To Do (No real order)
-* [ ] Refactor
+* [X] Refactor
     * [X] Style
-    * [ ] File structure
+    * [X] File structure
     * [X] Function/loop optimization
     * [X] Math optimization
 * [X] Benchmarking
