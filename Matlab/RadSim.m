@@ -15,7 +15,10 @@ torusRadius        = 20;   % meters
 allTocs            = 0;
 
 wireGeometry = generateWireGeometry(innerRadius, torusRadius);
-writeToCSV('wireGeometry.txt', wireGeometry)
+csvwrite('wireGeometry.txt', wireGeometry)
+
+% Since wireGeometry is constant, it can be read in rather than calculated depending on performance results
+% wireGeometry = csvread('wireGeometry.txt');
 
 while particlesSimualted < particlesRequested
 	tic
@@ -26,7 +29,7 @@ while particlesSimualted < particlesRequested
 	particlesSimualted = particlesSimualted + 1;
     
     %fileName = [runLetter num2str(particlesSimualted) '-particleMatrix.txt'];
-    %writeToCSV(fileName, particleSimulation)
+    %csvwrite(fileName, particleSimulation)
 
 	thisToc = toc
     allTocs = allTocs + thisToc;
