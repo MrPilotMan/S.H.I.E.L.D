@@ -59,7 +59,7 @@ delta = 1e^-6
    * [X] Version Benchmarking
 * [ ] CSV
    * [X] Save data to CSV
-   * [ ] Read in wire geometry from CSV
+   * [X] Read in wire geometry from CSV
    * [ ] CSV particle simulation interpreter & plotter
 * [ ] Parallelization
 * [ ] Hit detection
