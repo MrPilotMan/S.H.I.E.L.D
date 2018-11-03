@@ -29,7 +29,7 @@ function environment = generateRadiationEnvironment()
     while (abs(tan(acos(dot(velocityVector, -positionVector) / (norm(velocityVector) * norm(positionVector)))))) > abs((30 / norm(positionVector)))
         velocityVector = updateVector('v');
 
-        while sqrt((velocityVector(1)^2) + (velocityVector(2)^2) + (velocityVector(3)^2)) >= 300000000
+        while norm(velocityVector) >= 300000000
             velocityVector = updateVector('v');
         end
     end

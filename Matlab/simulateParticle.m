@@ -1,9 +1,10 @@
 function particleSimulation = simulateParticle(wireGeometry, innerRadius, torusRadius, delta, scale)
+    I      = .1;             % A
+    mu     = 4 * pi * 10^-7; % [Tm/A]
+    fourPi = 4 * pi;
+
     particleInViewField = false;
     while particleInViewField == false
-		I      = .1;             % A
-		mu     = 4 * pi * 10^-7; % [Tm/A]
-		fourPi = 4 * pi;
 
 		env = generateRadiationEnvironment();
 		% m = env(1) 
@@ -37,9 +38,9 @@ function particleSimulation = simulateParticle(wireGeometry, innerRadius, torusR
 		               wireGeometry(n, 2) - wireGeometry(n - 1, 2), ...
 		               wireGeometry(n, 3) - wireGeometry(n - 1, 3)];
 
-		        distanceVector = [position(1)-wireGeometry(n,1), ...
-		                          position(2)-wireGeometry(n,2), ...
-		                          position(3)-wireGeometry(n,3)];
+		        distanceVector = [position(1) - wireGeometry(n,1), ...
+		                          position(2) - wireGeometry(n,2), ...
+		                          position(3) - wireGeometry(n,3)];
 
 		        db = (mu / fourPi) .* cross(I .* L, distanceVector) ./ norm(distanceVector).^3;
 		        B = B + db;
@@ -55,14 +56,14 @@ function particleSimulation = simulateParticle(wireGeometry, innerRadius, torusR
 		    position = position + (delta/2) * velocity;
 		    position(3) = position(3) + velocity(3) * (delta/2);
 
-		     % Check if particle hit the spacecraft
-		     %if (position(3) >= -innerRadius) && (position(3) <= innerRadius)
-		         %if sqrt(position(1)^2 + position(2)^2) <= innerRadius 
-		             %fprintf('Hit the Craft\n')
-		             %hits = hits + 1;
-		             %break
+		    % Check if particle hit the spacecraft
+		    %if (position(3) >= -innerRadius) && (position(3) <= innerRadius)
+                %if sqrt(position(1)^2 + position(2)^2) <= innerRadius 
+                    %fprintf('Hit the Craft\n')
+                    %hits = hits + 1;
+                    %break
 		         %end
-		     %end
+		    %end
 
 		    % Check if particle is still in view field
 		    viewField = abs(scale * (innerRadius + torusRadius));
@@ -95,8 +96,10 @@ function particleSimulation = simulateParticle(wireGeometry, innerRadius, torusR
 		    allB(1, :) = zeros();
 		    allPosition = allPosition(any(allPosition, 2), :);
 		    
+            % Comment out if using CSV
 		    plotParticle(wireGeometry, allPosition, allB)
             particleSimulation = [allPosition allB];
+            
 		    fprintf('Simulation finished, particle plotted \n\n')
 		end
     end

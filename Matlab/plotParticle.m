@@ -9,10 +9,10 @@ function plotParticle(wireGeometry, allPosition, allB)
     % Velocity plot
     quiver3(allPosition(:, 1), allPosition(:, 2), allPosition(:, 3), allB(:, 1), allB(:, 2), allB(:, 3), 'MaxHeadSize', 2)
 
-    % Plot particel path
+    % Plot particle path
     plot3(allPosition(:, 1), allPosition(:, 2), allPosition(:, 3))
 
-    % Plot Particle
+    % Plot particle
     plot3(allPosition(:, 1), allPosition(:, 2), allPosition(:, 3), '*')
 
     % Clean up
