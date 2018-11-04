@@ -25,16 +25,19 @@
 | Machine                                       | Version | Scale | Delta           | Average Particle Time | Parallel |
 |-----------------------------------------------|---------|-------|-----------------|-----------------------|----------|
 | MacBook Pro, 2.9GHz i9, 32GB RAM, macOS 10.14 | 1.0     | 5000  | 1e<sup>-6</sup> | 13 seconds            | No       |
-| Dell, i7 6700, 16GB RAM, Windows 10           | 1.0     | 5000  | 1e<sup>-6</sup> | 22.7                  | No       |
+| Dell, 3.4 GHz i7 6700, 16GB RAM, Windows 10   | 1.0     | 5000  | 1e<sup>-6</sup> | 23 seconds            | No       |
 
 *When adding rows to the above table, please order your rows by version (new &rightarrow; old), time (fast &rightarrow; slow), delta (small &rightarrow; large), and scale (large &rightarrow; small), in that order.*
 
 #### Version Benchmarks
 | Version | Total Time | Particle Time | Memory per Particle | Particle Improvement | Memory Improvement | Notes   |         
 |---------|------------|---------------|---------------------|----------------------|--------------------|---------|
-| 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | N/A                  | N/A            | Only produced 19 plots. 
-| 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 832%                 | 349%   |Refactor & RAM/CPU optimization.
-| 1.1     |            |               |                     |                      |        |
+| 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | N/A                  | N/A   |Only produced 19 plots.| 
+| 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 832%                 | 349%  |Refactor & RAM/CPU optimization.|
+| 1.1     |            |               |                     |                      |       |CSV usage and file structure.|
+| 2.0     |            |               |                     |                      |       |Parallel code and hit detection.|
+| 3.0     |            |               |                     |                      |       |C++ translation.|
+
 
 ##### Standard Benchmarking Parameters
 ```
@@ -65,10 +68,13 @@ delta = 1e^-6
 * [ ] Hit detection
 * [ ] Translation
 
-## Contributors
+## Contributors (Alphabetical by last name)
+* John Galjanic
+   * Hit detection
+
+* Sam Kopp (GitHub username - MrPilotMan)
+  * Refactor and optimization
+  * Use CSV for collecting and loading data
+
 * Brennan McCann
   * Original simulation
-    
-* Sam Kopp (Github Username - MrPilotMan)
-  * Refactor/optimization
-  * Use CSV for collecting and loading data
