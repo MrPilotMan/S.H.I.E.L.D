@@ -1,9 +1,12 @@
+clear
+clc
+
 % Global variables
-particlesSimualted   = 0;
+particlesSimualted = 0;
 particlesRequested = 20;
 
 delta              = 1e-6; % seconds
-scale              = 5000;  % meters
+scale              = 5000; % meters
 
 innerRadius        = 10;   % meters
 torusRadius        = 20;   % meters

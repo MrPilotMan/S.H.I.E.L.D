@@ -32,7 +32,7 @@
 #### Version Benchmarks
 | Version | Total Time | Particle Time | Memory per Particle | Particle Improvement | Memory Improvement | Notes   |         
 |---------|------------|---------------|---------------------|----------------------|--------------------|---------|
-| 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | N/A                  | N/A   |Only produced 19 plots.| 
+| 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | N/A                  | N/A   |Only produced valid 19 plots.| 
 | 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 832%                 | 349%  |Refactor & RAM/CPU optimization.|
 | 1.1     |            |               |                     |                      |       |CSV usage and file structure.|
 | 2.0     |            |               |                     |                      |       |Parallel code and hit detection.|

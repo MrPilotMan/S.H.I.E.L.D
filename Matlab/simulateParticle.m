@@ -1,12 +1,12 @@
 function particleSimulation = simulateParticle(wireGeometry, innerRadius, torusRadius, delta, scale)
-    I      = .1;             % A
+    I      = .1;              % A
     mu     = 4 * pi * 10^-7; % [Tm/A]
     fourPi = 4 * pi;
 
-    particleInViewField = false;
-    while particleInViewField == false
+    particleInViewField = true;
+    while particleInViewField == true
 
-		env = generateRadiationEnvironment();
+		env = generateRadiationEnvironment(scale);
 		% m = env(1) 
 		% q = env(2)
 		q_over_m  = env(2)/env(1);
@@ -19,7 +19,7 @@ function particleSimulation = simulateParticle(wireGeometry, innerRadius, torusR
 
 		% Preallocate all-Matricies memory
 		% Allocations are only estimates, marticies will be resized as needed
-		% May be able to calculate matrix size using position. Might be too costly of a calculation
+		% May be able to calculate matrix size using position. Might be a waste of compute resources.
 		allB            = zeros(10e3, 3);
 		allPosition     = zeros(10e3, 3);
 		allVelocity     = zeros(10e3, 3);
@@ -54,51 +54,37 @@ function particleSimulation = simulateParticle(wireGeometry, innerRadius, torusR
 		    velocity = velocity + delta * acceleration;
 		    
 		    position = position + (delta/2) * velocity;
-		    position(3) = position(3) + velocity(3) * (delta/2);
-
-		    % Check if particle hit the spacecraft
-		    %if (position(3) >= -innerRadius) && (position(3) <= innerRadius)
-                %if sqrt(position(1)^2 + position(2)^2) <= innerRadius 
-                    %fprintf('Hit the Craft\n')
-                    %hits = hits + 1;
-                    %break
-		         %end
-		    %end
 
 		    % Check if particle is still in view field
-		    viewField = abs(scale * (innerRadius + torusRadius));
-		    if abs(position(1)) > viewField || ...
-		       abs(position(2)) > viewField || ...
-		       abs(position(3)) > viewField
-		        % fprintf(' - Particle outside of view field \n')
-		        break
-		    elseif particleInViewField == false
-		        particleInViewField = true;
+		    if any(abs(position) > scale)
+               particleInViewField = false;
+               break;
+             % fprintf(' - Particle outside of view field \n')
 		    end
 
 		    % Convert iteration to integer index for appending to martrix
-		    allMatrixIndex = uint16(iteration * 10e5 + 2);
+		    allMatrixIndex = uint16(iteration * delta^-1 + 2);
 
 		    allB(allMatrixIndex, :)            = B;
 		    allPosition(allMatrixIndex, :)     = position;
 		    allVelocity(allMatrixIndex, :)     = velocity;
 		    allAcceleration(allMatrixIndex, :) = acceleration;
-		    
+            
 		    % Print statement in unnecessary and imparts useless load
 		    % fprintf('I: %f\t X: %f\t Y: %f\t Z: %f\n', iteration, position(1), position(2), position(3))
 		end
 
-		if particleInViewField == true
+		if particleInViewField == false
 		    % Removes any unused rows
 		    % Needed so collapse function will not remove first row
 		    allB(1, :) = ones();
 		    allB = allB(any(allB, 2), :);
 		    allB(1, :) = zeros();
 		    allPosition = allPosition(any(allPosition, 2), :);
-		    
-            % Comment out if using CSV
-		    plotParticle(wireGeometry, allPosition, allB)
-            particleSimulation = [allPosition allB];
+            		    
+           % Comment out if using CSV
+             plotParticle(wireGeometry, allPosition, allB)
+             particleSimulation = [allPosition allB];
             
 		    fprintf('Simulation finished, particle plotted \n\n')
 		end

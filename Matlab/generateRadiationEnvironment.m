@@ -1,43 +1,60 @@
-function environment = generateRadiationEnvironment()
+function environment = generateRadiationEnvironment(scale)
+    particleType = randi([1,3]);
+    switch particleType
+        case 1 
+            charge = -1.602e-19;
+            mass = 9.11e-31;
+            fprintf('electron')
+        case 2
+            charge = 1.602e-19;
+            mass = 1.673e-27;
+            fprintf('proton')
+        case 3
+            charge = 3.204e-19;
+            mass = 6.692e-27;
+            fprintf('alpha particle')
+    end
     environment = zeros(1, 11);
+    
+    function functionVector = updateVector(algorithm)
+        minOffset = .8 * scale;
+        functionVector = zeros(1, 3);
 
-    function vector = updateVector(algorithm)
-        vector = zeros(1, 3);
-
-        for i = 1:3
-            if algorithm == 'p'
-                positionAlgorithm = (2 * 100 * rand) - 100;
-                value = positionAlgorithm;
-            elseif algorithm == 'v'
-                velocityAlgorithm = (2 * 3e8 * rand) - 3e8;
-                value = velocityAlgorithm;
-          % elseif algorithm == 'a'
-                % accelerationAlgorithm = (2 * 10000 * rand) - 10000;
-                % value = accelerationAlgorithm
+        % Set intiial particle position
+        if algorithm == 'p'
+            for i = 1:3
+                positionAlgorithm = (2 * scale * rand) - scale;
+                functionVector(i) = positionAlgorithm;
             end
+        % Generate random velocity in direction of craft
+        elseif algorithm == 'v'
+            targetTheta = (2 * pi * rand) - pi;
+            targetLength = (60 * rand) - 30;
+            
+            targetVector = zeros(1, 3);
+            targetVector(1) = targetLength * cos(targetTheta); 
+            targetVector(2) = targetLength * sin(targetTheta); 
+            targetVector(3) = (40 * rand) - 20;
 
-            vector(i) = value;
+            parametricVector = targetVector - positionVector;
+            unitParametricVector = parametricVector./norm(parametricVector);
+            magnitude = 3e8 * rand;
+            functionVector = magnitude .* unitParametricVector;
+%       elseif algorithm == 'a'
+%           accelerationAlgorithm = (2 * 10000 * rand) - 10000;
+%           value = accelerationAlgorithm
+        end
+        
+        % Check initial position is within initial condition bounds
+        checkPosition = abs(functionVector) > minOffset;
+        if algorithm == 'p' && any(checkPosition) == false
+            updateVector(algorithm);
         end
     end
-
-    charge = randi([-3, 3]);
-    mass   = rand * 3.952562528e-25;
 
     positionVector = updateVector('p');
     velocityVector = updateVector('v');
-
-    while (abs(tan(acos(dot(velocityVector, -positionVector) / (norm(velocityVector) * norm(positionVector)))))) > abs((30 / norm(positionVector)))
-        velocityVector = updateVector('v');
-
-        while norm(velocityVector) >= 300000000
-            velocityVector = updateVector('v');
-        end
-    end
-
     accelerationVector = zeros(1, 3);
 
-    environment(1, :) = [mass, charge, ...
-                          positionVector(1), positionVector(2), positionVector(3), ...
-                          velocityVector(1), velocityVector(2), velocityVector(3), ...
-                          accelerationVector(1), accelerationVector(2), accelerationVector(3)];
+    environment(1, :) = [mass, charge, positionVector, velocityVector, accelerationVector];
 end
