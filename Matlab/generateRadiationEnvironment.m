@@ -4,15 +4,15 @@ function environment = generateRadiationEnvironment(scale)
         case 1 
             charge = -1.602e-19;
             mass = 9.11e-31;
-            fprintf('electron')
+            fprintf('electron \n')
         case 2
             charge = 1.602e-19;
             mass = 1.673e-27;
-            fprintf('proton')
+            fprintf('proton \n')
         case 3
             charge = 3.204e-19;
             mass = 6.692e-27;
-            fprintf('alpha particle')
+            fprintf('alpha particle \n')
     end
     environment = zeros(1, 11);
     
