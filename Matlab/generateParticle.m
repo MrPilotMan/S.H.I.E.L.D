@@ -1,4 +1,4 @@
-function environment = generateRadiationEnvironment(scale)
+function environment = generateParticle(scale)
     particleType = randi([1,3]);
     switch particleType
         case 1 

@@ -6,7 +6,7 @@ function particleSimulation = simulateParticle(wireGeometry, delta, scale)
     particleInViewField = true;
     while particleInViewField == true
 
-		env = generateRadiationEnvironment(scale);
+		env = generateParticle(scale);
 		% m = env(1) 
 		% q = env(2)
 		q_over_m  = env(2)/env(1);
