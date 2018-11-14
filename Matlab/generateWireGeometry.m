@@ -1,12 +1,12 @@
 function wireGeometry = generateWireGeometry(innerRadius, torusRadius)
-	dTheta  = .001 / pi;      % radians
-    N       = 100;            % number of turns
+	dTheta  = .001 / pi; % radians
+    turns   = 100000;
     phi_max = asin(((torusRadius - innerRadius)/2) / (innerRadius + (torusRadius - innerRadius)/2));
-    dPhi    = N * dTheta;
+    dPhi    = turns * dTheta;
     phi     = pi/2 - phi_max;
 
     % Preallocate array memory
-    wireGeometry = zeros(uint16((2 * pi)/dTheta), 3);
+    wireGeometry = zeros(uint16((2 * pi)/dTheta) + 1, 3);
 
     i = 1;
     for theta = 0:dTheta:(2 * pi)

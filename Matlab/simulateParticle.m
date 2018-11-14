@@ -86,7 +86,7 @@ function particleSimulation = simulateParticle(wireGeometry, delta, scale)
              plotParticle(wireGeometry, allPosition, allB)
              particleSimulation = [allPosition allB];
             
-		    fprintf('Simulation finished, particle plotted \n\n')
+		    fprintf('Particle origin [%f, %f, %f] \nSimulation finished, particle plotted \n\n', allPosition(1,1), allPosition(1,2), allPosition(1,3))
 		end
     end
 end

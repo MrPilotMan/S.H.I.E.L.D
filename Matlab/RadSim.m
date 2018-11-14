@@ -17,8 +17,10 @@ torusRadius        = 20;   % meters
 %runLetter          = 'a';
 allTocs            = 0;
 
-% Since wireGeometry is constant, it can be read in rather than calculated depending on performance results
-load('wireGeometry.mat');
+% Comment out if loading a pregenerated wireGeometry
+wireGeometry = generateWireGeometry(innerRadius, torusRadius);
+% Read in wireGeometry from .mat file
+% load('wireGeometry.mat');
 
 while particlesSimualted < particlesRequested
 	tic
