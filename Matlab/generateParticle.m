@@ -1,4 +1,4 @@
-function environment = generateParticle(scale)
+function particle = generateParticle(scale)
     particleType = randi([1,3]);
     switch particleType
         case 1 
@@ -14,7 +14,7 @@ function environment = generateParticle(scale)
             mass = 6.692e-27;
             fprintf('alpha particle \n')
     end
-    environment = zeros(1, 11);
+    particle = zeros(1, 11);
     
     function functionVector = updateVector(algorithm)
         minOffset = .8 * scale;
@@ -56,5 +56,5 @@ function environment = generateParticle(scale)
     velocityVector = updateVector('v');
     accelerationVector = zeros(1, 3);
 
-    environment(1, :) = [mass, charge, positionVector, velocityVector, accelerationVector];
+    particle(1, :) = [mass, charge, positionVector, velocityVector, accelerationVector];
 end
