@@ -18,7 +18,7 @@ torusRadius        = 20;   % meters
 allTocs            = 0;
 
 % Comment out if loading a pregenerated wireGeometry
-wireGeometry = generateWireGeometry(innerRadius, torusRadius);
+% wireGeometry = generateWireGeometry(innerRadius, torusRadius);
 % Read in wireGeometry from .mat file
 % load('wireGeometry.mat');
 
