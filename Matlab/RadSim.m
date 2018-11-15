@@ -7,6 +7,7 @@ useCSV             = true;
 prefix             = 'a';
 
 % Parameters
+particlesRequested = 18;
 particlesSimualted = 0;
 
 delta              = 1e-8; % seconds
