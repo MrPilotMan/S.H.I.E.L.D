@@ -1,4 +1,4 @@
-function particleSimulation = simulateParticle(wireGeometry, delta, scale)
+function [allPosition, allB] = simulateParticle(wireGeometry, delta, scale)
     I      = 10;              % A
     mu     = 4 * pi * 10^-7; % [Tm/A]
     fourPi = 4 * pi;
@@ -44,15 +44,13 @@ function particleSimulation = simulateParticle(wireGeometry, delta, scale)
 
 		        db = (mu / fourPi) .* cross(I .* L, distanceVector) ./ norm(distanceVector).^3;
 		        B = B + db;
-		    end
+            end
 		    
+            % Update particle values
 		    acceleration(1) = q_over_m *  (velocity(2)*B(3) - B(2)*velocity(3));
 		    acceleration(2) = q_over_m * -(velocity(1)*B(3) - B(1)*velocity(3));
 		    acceleration(3) = q_over_m *  (velocity(1)*B(2) - B(1)*velocity(2));
-
-		    %ITERATIVE DEPENDENT ON EACH STEP delt-BETTER METHOD
 		    velocity = velocity + delta * acceleration;
-		    
 		    position = position + (delta/2) * velocity;
 
 		    % Check if particle is still in view field
@@ -81,10 +79,6 @@ function particleSimulation = simulateParticle(wireGeometry, delta, scale)
 		    allB = allB(any(allB, 2), :);
 		    allB(1, :) = zeros();
 		    allPosition = allPosition(any(allPosition, 2), :);
-            		    
-           % Comment out if using CSV
-             plotParticle(wireGeometry, allPosition, allB)
-             particleSimulation = [allPosition allB];
             
 		    fprintf('Particle origin [%f, %f, %f] \nSimulation finished, particle plotted \n\n', allPosition(1,1), allPosition(1,2), allPosition(1,3))
 		end

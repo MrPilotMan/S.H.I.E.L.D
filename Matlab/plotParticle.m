@@ -2,7 +2,7 @@ function plotParticle(wireGeometry, allPosition, allB)
     % Create plot window
     figure()
 
-    % Create wire geometry
+    % Plot wire geometry
     plot3(wireGeometry(:, 1), wireGeometry(:, 2), wireGeometry(:, 3),'Color','b')
     hold on
 

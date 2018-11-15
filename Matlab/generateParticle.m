@@ -17,25 +17,34 @@ function particle = generateParticle(scale)
     particle = zeros(1, 11);
     
     function functionVector = updateVector(algorithm)
-        minOffset = .8 * scale;
         functionVector = zeros(1, 3);
 
         % Set initial particle position
         if algorithm == 'p'
+            minOffset = .9 * scale;
+            
             for i = 1:3
                 positionAlgorithm = (2 * scale * rand) - scale;
                 functionVector(i) = positionAlgorithm;
+            end
+            
+            % Check initial position is within initial start zone
+            checkPosition = abs(functionVector) > minOffset;
+            if any(checkPosition) == false
+                updateVector(algorithm);
             end
         % Generate random velocity in direction of craft
         elseif algorithm == 'v'
             targetTheta = (2 * pi * rand) - pi;
             targetLength = (60 * rand) - 30;
             
+            % Create target position in craft
             targetVector = zeros(1, 3);
             targetVector(1) = targetLength * cos(targetTheta); 
             targetVector(2) = targetLength * sin(targetTheta); 
             targetVector(3) = (40 * rand) - 20;
 
+            % Extract velocity
             parametricVector = targetVector - positionVector;
             unitParametricVector = parametricVector./norm(parametricVector);
             magnitude = 3e8 * rand;
@@ -43,12 +52,6 @@ function particle = generateParticle(scale)
 %       elseif algorithm == 'a'
 %           accelerationAlgorithm = (2 * 10000 * rand) - 10000;
 %           value = accelerationAlgorithm
-        end
-        
-        % Check initial position is within initial condition bounds
-        checkPosition = abs(functionVector) > minOffset;
-        if algorithm == 'p' && any(checkPosition) == false
-            updateVector(algorithm);
         end
     end
 
