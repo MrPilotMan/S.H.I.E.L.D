@@ -14,13 +14,13 @@ torusRadius        = 20;   % meters
 %hits               = 0;
 %misses             = 0;
 
-%runLetter          = 'a';
+runLetter          = 'a';
 allTocs            = 0;
 
 % Comment out if loading a pregenerated wireGeometry
-% wireGeometry = generateWireGeometry(innerRadius, torusRadius);
+wireGeometry = generateWireGeometry(innerRadius, torusRadius);
 % Read in wireGeometry from .mat file
-% load('wireGeometry.mat');
+% load('wireGeometry/1e4.mat');
 
 while particlesSimualted < particlesRequested
 	tic
@@ -30,8 +30,8 @@ while particlesSimualted < particlesRequested
 	particleSimulation = simulateParticle(wireGeometry, delta, scale);
 	particlesSimualted = particlesSimualted + 1;
     
-    %fileName = [runLetter num2str(particlesSimualted) '-particleMatrix.txt'];
-    %csvwrite(fileName, particleSimulation)
+    fileName = [runLetter num2str(particlesSimualted) '-particleMatrix.csv'];
+    csvwrite(fileName, particleSimulation)
 
 	thisToc = toc
     allTocs = allTocs + thisToc;
