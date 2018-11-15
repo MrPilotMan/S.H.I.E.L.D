@@ -2,17 +2,17 @@ clear
 clc
 
 % Global variables
+particlesRequested = 18;
 particlesSimualted = 0;
-particlesRequested = 20;
 
-delta              = 1e-6; % seconds
-scale              = 5000; % meters
+delta              = 1e-8; % seconds
+scale              = 150; % meters
 
 innerRadius        = 10;   % meters
 torusRadius        = 20;   % meters
 
-%hits              = 0;
-%misses            = 0;
+%hits               = 0;
+%misses             = 0;
 
 %runLetter          = 'a';
 allTocs            = 0;

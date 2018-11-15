@@ -20,7 +20,7 @@ function particle = generateParticle(scale)
         minOffset = .8 * scale;
         functionVector = zeros(1, 3);
 
-        % Set intiial particle position
+        % Set initial particle position
         if algorithm == 'p'
             for i = 1:3
                 positionAlgorithm = (2 * scale * rand) - scale;

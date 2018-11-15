@@ -1,5 +1,5 @@
 function particleSimulation = simulateParticle(wireGeometry, delta, scale)
-    I      = .1;              % A
+    I      = 10;              % A
     mu     = 4 * pi * 10^-7; % [Tm/A]
     fourPi = 4 * pi;
 

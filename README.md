@@ -12,11 +12,15 @@
 ## Instructions on running
 1. Download the [latest release](https://github.com/MrPilotMan/RadSim/releases) file titled `RadSim.m.zip`.
 2. Unzip and open `RadSim.m` in MatLab.
-3. Adjust `requestedParticles`, `scale`, and `delta` variables as desired.
+3. Adjust `requestedParticles`, `scale`, and `delta` variables in `radsim.m` as desired.
    1. Setting `requestedParticles` higher will demand significantly more RAM to display the plots. It is advisable to run more simulations with a lower `requestedParticle` size.
    2. Making `scale` larger does not produce better graphs and will significantly slow down each particles simulation.
-   3. Setting `delta` to a lower numeric value will increase the granularity of the simulation, but results in a linear time increase.
-4. Save and run the simulation.
+   3. Setting `delta` to a lower numeric value will increase the granularity of the simulation, but results in a roughly linear time increase.
+5. There are a number of premade `wireGeometry` data files in `../wireGeometry`, but the option to set your own variables remains.
+  1. To use the included data, make sure `load('wireGeometry/1e4.mat');` is uncommented and `wireGeometry = generateWireGeometry(innerRadius, torusRadius);` is commented out. Then replace the file name (eg. 1e4.mat) with your desired data.
+    1. All the included data files are multiples of 10 (eg. 1e4 is equivelant to `turns = 1000;`).
+  2. If you wish to gereate the `wireGeometry` during the simulation, make sure the above two lines are reversed and you have manually set any variables in `generateWireGeometry.m`.
+6. If you want to run the simulation in parallel, simply set `parallel = true`.
    1. On termination or completion, MatLab will display the plots.
    
 ## Benchmarks
@@ -32,10 +36,10 @@
 #### Version Benchmarks
 | Version | Total Time | Particle Time | Memory per Particle | Particle Improvement | Memory Improvement | Notes   |         
 |---------|------------|---------------|---------------------|----------------------|--------------------|---------|
-| 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | N/A                  | N/A   |Only produced valid 19 plots.| 
-| 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 832%                 | 349%  |Refactor & RAM/CPU optimization.|
+| 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | 0%                   | 0%   |Only produced valid 19 plots.| 
+| 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 832%                 | 349%  |Refactor & CPU/MEM optimization.|
 | 1.1     |            |               |                     |                      |       |CSV usage and file structure.|
-| 2.0     |            |               |                     |                      |       |Parallel code and hit detection.|
+| 2.0     |            |               |                     |                      |       |Parallelized with hit detection.|
 | 3.0     |            |               |                     |                      |       |C++ translation.|
 
 
@@ -48,6 +52,7 @@ requestedParticles = 100
 scale = 10000
 
 delta = 1e^-6
+
 ```
 
 
@@ -65,7 +70,12 @@ delta = 1e^-6
    * [X] Read in wire geometry from CSV
    * [ ] CSV particle simulation interpreter & plotter
 * [ ] Parallelization
+   * [ ] MATLAB
+   * [ ] C++
 * [ ] Hit detection
+* [ ] Data collection
+   * [X] Particle type
+   * [ ] Approach angle
 * [ ] Translation
 
 ## Contributors (Alphabetical by last name)
