@@ -17,11 +17,11 @@
    2. Making `scale` larger does not produce better graphs and will significantly slow down each particles simulation.
    3. Setting `delta` to a lower numeric value will increase the granularity of the simulation, but results in a roughly linear time increase.
 5. There are a number of premade `wireGeometry` data files in `../wireGeometry`, but the option to set your own variables remains.
-  1. To use the included data, make sure `load('wireGeometry/1e4.mat');` is uncommented and `wireGeometry = generateWireGeometry(innerRadius, torusRadius);` is commented out. Then replace the file name (eg. 1e4.mat) with your desired data.
-    1. All the included data files are multiples of 10 (eg. 1e4 is equivelant to `turns = 1000;`).
-  2. If you wish to gereate the `wireGeometry` during the simulation, make sure the above two lines are reversed and you have manually set any variables in `generateWireGeometry.m`.
+   1. To use the included data, make sure `load('wireGeometry/1e4.mat');` is uncommented and `wireGeometry = generateWireGeometry(innerRadius, torusRadius);` is commented out. Then replace the file name (eg. 1e4.mat) with your desired data.
+       1. All the included data files are multiples of 10 (eg. 1e4 is equivelant to `turns = 1000;`).
+   2. If you wish to gereate the `wireGeometry` during the simulation, make sure the above two lines are reversed and you have manually set any variables in `generateWireGeometry.m`.
 6. If you want to run the simulation in parallel, make sure you have started a worker pool, then simply set `parallel = true`.
-  2. Since MATLAB will not show plots created in a `parfor` loop, parallel simulations will only report a final hit/missed tally.
+   2. Since MATLAB will not show plots created in a `parfor` loop, parallel simulations will only report a final hit/missed tally.
 7. Save and run the simulation.
    1. On termination or completion, MatLab will display the plots.
    
