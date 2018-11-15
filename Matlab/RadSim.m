@@ -1,8 +1,12 @@
 clear
 clc
 
-% Global variables
-particlesRequested = 18;
+% Set up
+parallel           = true;
+useCSV             = true;
+prefix             = 'a';
+
+% Parameters
 particlesSimualted = 0;
 
 delta              = 1e-8; % seconds
@@ -11,17 +15,15 @@ scale              = 150; % meters
 innerRadius        = 10;   % meters
 torusRadius        = 20;   % meters
 
-%hits               = 0;
-%misses             = 0;
-
-%parallel           = false;
-%runLetter          = 'a';
+% Data
+hits               = 3;
+misses             = 4;
 allTocs            = 0;
 
-% Comment out if loading a pregenerated wireGeometry
+% Uncomment if not loading a pregenerated wireGeometry
 % wireGeometry = generateWireGeometry(innerRadius, torusRadius);
 % Read in wireGeometry from .mat file
- load('wireGeometry/1e4.mat');
+load('wireGeometry/1e4.mat');
 
 if parallel == false
     while particlesSimualted < particlesRequested
@@ -29,12 +31,17 @@ if parallel == false
 
         fprintf('\nStarting simulation: %3.0f \nTotal simulation time: %7.3f seconds \n', uint8(particlesSimualted + 1), allTocs)
 
-        particleSimulation = simulateParticle(wireGeometry, delta, scale);
+        [position, B] = simulateParticle(wireGeometry, delta, scale);
         particlesSimualted = particlesSimualted + 1;
-
-        %fileName = [runLetter num2str(particlesSimualted) '-particleMatrix.txt'];
-        %csvwrite(fileName, particleSimulation)
-
+        
+        if useCSV == false
+            plotParticle(wireGeometry, position, B)
+        else
+            fileName = [prefix num2str(particlesSimualted) '.txt'];
+            data = [position, B];
+            csvwrite(['data/' fileName], data)
+        end
+        
         thisToc = toc
         allTocs = allTocs + thisToc;
     end
@@ -43,17 +50,18 @@ if parallel == false
     fprintf('Average particle simulation time: %7.3f seconds', averageToc)
 else
     tic
-    parfor sim = 0:particlesRequested
-        %workerTic = tic
+    parfor sim = 1:particlesRequested
+        fprintf('\nStarting simulation: %3.0f \nTotal simulation time: %7.3f seconds \n', uint8(sim))
 
-        fprintf('\nStarting simulation: %3.0f \nTotal simulation time: %7.3f seconds \n', uint8(sim + 1))
-
-        particleSimulation = simulateParticle(wireGeometry, delta, scale);
-
-        %fileName = [runLetter num2str(particlesSimualted) '-particleMatrix.txt'];
-        %csvwrite(fileName, particleSimulation)
-
-        %workerToc = toc
+        [position, B] = simulateParticle(wireGeometry, delta, scale);
+        
+        if useCSV == true
+            fileName = [prefix num2str(sim) '.txt'];
+            data = [position, B];
+            csvwrite(['data/' fileName], data)
+        end
     end
     toc
 end
+
+fprintf('\n\n All particles generated \nHits: %f \nMisses: %f \n', hits, misses)
