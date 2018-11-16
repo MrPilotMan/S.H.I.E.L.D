@@ -33,7 +33,7 @@ function [allPosition, allB] = simulateParticle(wireGeometry, delta, scale)
 		    B = zeros(1,3);
 
 		    %Calculating B Field
-		    for n = 2:size(wireGeometry, 1)
+            for n = 2:size(wireGeometry, 1)
 		        L   = [wireGeometry(n, 1) - wireGeometry(n - 1, 1), ...
 		               wireGeometry(n, 2) - wireGeometry(n - 1, 2), ...
 		               wireGeometry(n, 3) - wireGeometry(n - 1, 3)];
