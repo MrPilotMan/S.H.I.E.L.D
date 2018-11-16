@@ -56,7 +56,7 @@ function particleSimulation = simulateParticle(wireGeometry, delta, scale)
 		    position = position + (delta/2) * velocity;
 
 		    % Check if particle is still in view field
-		    if any(abs(position) > scale * .5)
+		    if any(abs(position) > scale)
                particleInViewField = false;
                break;
              % fprintf(' - Particle outside of view field \n')
