@@ -1,4 +1,4 @@
-function [allPosition, allB] = simulateParticle(wireGeometry, delta, scale)
+function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
     I      = 10;              % A
     mu     = 4 * pi * 10^-7; % [Tm/A]
     fourPi = 4 * pi;
@@ -53,14 +53,7 @@ function [allPosition, allB] = simulateParticle(wireGeometry, delta, scale)
 		    velocity = velocity + delta * acceleration;
 		    position = position + (delta/2) * velocity;
 
-		    % Check if particle is still in view field
-		    if any(abs(position) > scale)
-               particleInViewField = false;
-               break;
-             % fprintf(' - Particle outside of view field \n')
-		    end
-
-		    % Convert iteration to integer index for appending to martrix
+            % Convert iteration to integer index for appending to martrix
 		    allMatrixIndex = uint16(iteration * delta^-1 + 2);
 
 		    allB(allMatrixIndex, :)            = B;
@@ -68,7 +61,14 @@ function [allPosition, allB] = simulateParticle(wireGeometry, delta, scale)
 		    allVelocity(allMatrixIndex, :)     = velocity;
 		    allAcceleration(allMatrixIndex, :) = acceleration;
             
-		    % Print statement in unnecessary and imparts useless load
+            % Check if particle is still in view field
+            hit = checkHit(allPosition(allMatrixIndex, :), allPosition(allMatrixIndex-1, :));
+            if any(abs(position) > scale) || hit == 1
+               particleInViewField = false;
+               break;
+            end
+            
+		    % Print statement is unnecessary and imparts useless load
 		    % fprintf('I: %f\t X: %f\t Y: %f\t Z: %f\n', iteration, position(1), position(2), position(3))
 		end
 

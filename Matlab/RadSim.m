@@ -17,8 +17,8 @@ innerRadius        = 10;   % meters
 torusRadius        = 20;   % meters
 
 % Data
-hits               = 3;
-misses             = 4;
+hits               = 0;
+misses             = 0;
 allTocs            = 0;
 
 % Uncomment if not loading a pregenerated wireGeometry
@@ -32,13 +32,15 @@ if parallel == false
 
         fprintf('\nStarting simulation: %3.0f \nTotal simulation time: %7.3f seconds \n', uint8(particlesSimualted + 1), allTocs)
 
-        [position, B] = simulateParticle(wireGeometry, delta, scale);
+        [position, B, hit] = simulateParticle(wireGeometry, delta, scale);
         particlesSimualted = particlesSimualted + 1;
+        hits = hits + hit
+        misses = misses + abs(1 - hits)
         
         if useCSV == false
             plotParticle(wireGeometry, position, B)
         else
-            fileName = [prefix num2str(particlesSimualted) '.txt'];
+            fileName = [prefix num2str(particlesSimualted) '.csv'];
             data = [position, B];
             csvwrite(['data/' fileName], data)
         end
@@ -52,12 +54,12 @@ if parallel == false
 else
     tic
     parfor sim = 1:particlesRequested
-        fprintf('\nStarting simulation: %3.0f \nTotal simulation time: %7.3f seconds \n', uint8(sim))
+        fprintf('\nStarting simulation: %3.0f\n', sim)
 
-        [position, B] = simulateParticle(wireGeometry, delta, scale);
+        [position, B, hit] = simulateParticle(wireGeometry, delta, scale);
         
         if useCSV == true
-            fileName = [prefix num2str(sim) '.txt'];
+            fileName = [prefix num2str(sim) '.csv'];
             data = [position, B];
             csvwrite(['data/' fileName], data)
         end
@@ -65,4 +67,5 @@ else
     toc
 end
 
-fprintf('\n\n All particles generated \nHits: %f \nMisses: %f \n', hits, misses)
+misses = particlesRequested - hits;
+fprintf('\n\n All particles generated \nHits: %.0f \nMisses: %.0f \n', hits, misses)
