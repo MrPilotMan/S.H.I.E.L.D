@@ -7,7 +7,7 @@
 
 **Project:** Project S.H.I.E.L.D.
 
-**Objective:** Simulate particle interaction with an electro-magnetic field radiation shield on a spacecraft.
+**Objective:** Simulate radiation particle interaction with an electro-magnetic shield on a spacecraft.
 
 ## Instructions on running
 1. Download the [latest release](https://github.com/MrPilotMan/RadSim/releases) file titled `RadSim.zip`.
