@@ -21,8 +21,8 @@ hits               = 0;
 misses             = 0;
 allTocs            = 0;
 
-% Uncomment if not loading a pregenerated wireGeometry
-% wireGeometry = generateWireGeometry(innerRadius, torusRadius);
+% Comment out if loading a pregenerated wireGeometry
+wireGeometry = generateWireGeometry(innerRadius, torusRadius);
 % Read in wireGeometry from .mat file
 load('wireGeometry/1e4.mat');
 

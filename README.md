@@ -17,12 +17,10 @@
    2. Making `scale` larger does not produce better graphs and will significantly slow down each particles simulation.
    3. Setting `delta` to a lower numeric value will increase the granularity of the simulation, but results in a roughly linear time increase.
 5. There are a number of premade `wireGeometry` data files in `../wireGeometry`, but the option to set your own variables remains.
-   1. To use the included data, make sure `load('wireGeometry/1e4.mat');` is uncommented and `wireGeometry = generateWireGeometry(innerRadius, torusRadius);` is commented out. Then replace the file name (eg. 1e4.mat) with your desired data.
-       1. All the included data files are multiples of 10 (eg. 1e4 is equivelant to `turns = 1000;`).
-   2. If you wish to gereate the `wireGeometry` during the simulation, make sure the above two lines are reversed and you have manually set any variables in `generateWireGeometry.m`.
-6. If you want to run the simulation in parallel, make sure you have started a worker pool, then simply set `parallel = true`.
-   2. Since MATLAB will not show plots created in a `parfor` loop, parallel simulations will only report a final hit/missed tally.
-7. Save and run the simulation.
+  1. To use the included data, make sure `load('wireGeometry/1e4.mat');` is uncommented and `wireGeometry = generateWireGeometry(innerRadius, torusRadius);` is commented out. Then replace the file name (eg. 1e4.mat) with your desired data.
+    1. All the included data files are multiples of 10 (eg. 1e4 is equivelant to `turns = 1000;`).
+  2. If you wish to gereate the `wireGeometry` during the simulation, make sure the above two lines are reversed and you have manually set any variables in `generateWireGeometry.m`.
+6. If you want to run the simulation in parallel, simply set `parallel = true`.
    1. On termination or completion, MatLab will display the plots.
    
 ## Benchmarks
@@ -39,10 +37,10 @@
 | Version | Total Time | Particle Time | Memory per Particle | Particle Improvement | Memory Improvement | Notes   |         
 |---------|------------|---------------|---------------------|----------------------|--------------------|---------|
 | 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | 0%                   | 0%   |Only produced valid 19 plots.| 
-| 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 832%                 | 349%  |Refactor & CPU/MEM optimization.|
-| 1.1     |            |               |                     |                      |       |CSV usage and file structure.|
-| 2.0     |            |               |                     |                      |       |Parallelized with hit detection.|
-| 3.0     |            |               |                     |                      |       |C++ translation.|
+| 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 821%                 | 349% |Refactor & CPU/MEM optimization.|
+| 1.1     | 09m 50s    | 0m 06s        | 99.90 MB            | 3833%                | 361% |CSV usage and file structure.|
+| 2.0     |            |               |                     |                      |      |Parallelized with hit detection.|
+| 3.0     |            |               |                     |                      |      |C++ translation.|
 
 
 ##### Standard Benchmarking Parameters
@@ -55,7 +53,6 @@ scale = 10000
 
 delta = 1e^-6
 
-As of version 2.0, particles are no longer plotted since the hit detection function si used.
 ```
 
 
