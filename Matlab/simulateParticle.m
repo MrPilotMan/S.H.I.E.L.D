@@ -30,7 +30,7 @@ function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
         allVelocity(1, :)     = velocity;
         allAcceleration(1, :) = acceleration;
 
-        for iteration = 0:delta:10
+        for iteration = 1:(100^-delta)
             B = zeros(1,3);
 
             %Calculating B Field
@@ -58,14 +58,10 @@ function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
             acceleration(1) = q_over_m *  (velocity(2)*B(3) - B(2)*velocity(3));
             acceleration(2) = q_over_m * -(velocity(1)*B(3) - B(1)*velocity(3));
             acceleration(3) = q_over_m *  (velocity(1)*B(2) - B(1)*velocity(2));
+            velocity = velocity + 10^delta * acceleration;
+            position = position + (10^delta/2) * velocity;
 
-            %ITERATIVE DEPENDENT ON EACH STEP delt-BETTER METHOD
-            velocity = velocity + delta * acceleration;
-
-            position = position + (delta/2) * velocity;
-
-                % Convert iteration to integer index for appending to martrix
-            allMatrixIndex = uint16(iteration * delta^-1 + 2);
+            allMatrixIndex = iteration + 1;
 
             allB(allMatrixIndex, :)            = B;
             allPosition(allMatrixIndex, :)     = position;
@@ -93,7 +89,6 @@ function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
 
                % Comment out if using CSV
                  plotParticle(wireGeometry, allPosition, allB)
-                 particleSimulation = [allPosition allB];
 
             fprintf('Particle origin [%f, %f, %f] \nSimulation finished, particle plotted \n\n', allPosition(1,1), allPosition(1,2), allPosition(1,3))
         end

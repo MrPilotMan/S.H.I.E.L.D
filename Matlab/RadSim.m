@@ -10,7 +10,7 @@ prefix             = 'a';
 particlesRequested = 18;
 particlesSimualted = 0;
 
-delta              = 1e-8; % seconds
+delta              = -8; % seconds
 scale              = 150; % meters
 
 innerRadius        = 10;   % meters
@@ -22,7 +22,7 @@ misses             = 0;
 allTocs            = 0;
 
 % Comment out if loading a pregenerated wireGeometry
-wireGeometry = generateWireGeometry(innerRadius, torusRadius);
+% wireGeometry = generateWireGeometry(innerRadius, torusRadius);
 % Read in wireGeometry from .mat file
 load('wireGeometry/1e4.mat');
 
@@ -34,8 +34,8 @@ if parallel == false
 
         [position, B, hit] = simulateParticle(wireGeometry, delta, scale);
         particlesSimualted = particlesSimualted + 1;
-        hits = hits + hit
-        misses = misses + abs(1 - hits)
+        hits = hits + hit;
+        misses = misses + abs(1 - hits);
         
         if useCSV == false
             plotParticle(wireGeometry, position, B)
