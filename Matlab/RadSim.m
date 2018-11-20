@@ -57,6 +57,8 @@ else
         fprintf('\nStarting simulation: %3.0f\n', sim)
 
         [position, B, hit] = simulateParticle(wireGeometry, delta, scale);
+        disp(hit)
+        %hit = hits + hit;
         
         if useCSV == true
             fileName = [prefix num2str(sim) '.csv'];

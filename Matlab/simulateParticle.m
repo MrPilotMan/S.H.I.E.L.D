@@ -41,8 +41,16 @@ function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
 		        distanceVector = [position(1) - wireGeometry(n,1), ...
 		                          position(2) - wireGeometry(n,2), ...
 		                          position(3) - wireGeometry(n,3)];
-
-		        db = (mu / fourPi) .* cross(I .* L, distanceVector) ./ norm(distanceVector).^3;
+                
+                mb4p = (mu / fourPi);
+                idtl = I .* L;
+                ndex = norm(distanceVector).^3;
+                
+                db = zeros(1,3);
+                db(1) = mb4p * (idtl(2)*distanceVector(3) - idtl(3)*distanceVector(2)) / ndex;
+                db(2) = mb4p * (idtl(3)*distanceVector(1) - idtl(1)*distanceVector(3)) / ndex;
+                db(3) = mb4p * (idtl(1)*distanceVector(2) - idtl(2)*distanceVector(1)) / ndex;
+                
 		        B = B + db;
             end
 		    
