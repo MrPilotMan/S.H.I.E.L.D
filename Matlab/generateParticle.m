@@ -4,15 +4,15 @@ function particle = generateParticle(scale)
         case 1 
             charge = -1.602e-19;
             mass = 9.11e-31;
-            fprintf('electron \n')
+            particleType = 'electron';
         case 2
             charge = 1.602e-19;
             mass = 1.673e-27;
-            fprintf('proton \n')
+            particleType = 'proton';
         case 3
             charge = 3.204e-19;
             mass = 6.692e-27;
-            fprintf('alpha particle \n')
+            particleType = 'alpha particle';
     end
     particle = zeros(1, 11);
     
@@ -34,7 +34,7 @@ function particle = generateParticle(scale)
         % Generate random velocity in direction of craft
         elseif algorithm == 'v'
             targetTheta = (2 * pi * rand) - pi;
-            targetLength = (60 * rand) - 30;
+            targetLength = (20 * rand) - 10;
             
             targetVector = zeros(1, 3);
             targetVector(1) = targetLength * cos(targetTheta); 
@@ -56,4 +56,6 @@ function particle = generateParticle(scale)
     accelerationVector = zeros(1, 3);
 
     particle(1, :) = [mass, charge, positionVector, velocityVector, accelerationVector];
+    
+    fprintf([particleType ' at position [' num2str(positionVector) '] with velocity [' num2str(velocityVector) ']\n'])
 end
