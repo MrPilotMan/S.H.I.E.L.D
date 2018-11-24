@@ -1,15 +1,10 @@
-clear
-clc
-
 % Set up
-parallel           = true;
-useCSV             = true;
+particlesRequested = 18;
+parallel           = false;
+useCSV             = false;
 prefix             = 'a';
 
 % Parameters
-particlesRequested = 18;
-particlesSimualted = 0;
-
 delta              = -8; % seconds
 scale              = 150; % meters
 
@@ -24,9 +19,10 @@ allTocs            = 0;
 % Comment out if loading a pregenerated wireGeometry
 % wireGeometry = generateWireGeometry(innerRadius, torusRadius);
 % Read in wireGeometry from .mat file
-load('wireGeometry/1e4.mat');
+load('wireGeometry/1e3.mat');
 
 if parallel == false
+    particlesSimualted = 0;
     while particlesSimualted < particlesRequested
         tic
 

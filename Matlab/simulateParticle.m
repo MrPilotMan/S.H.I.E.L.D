@@ -68,12 +68,12 @@ function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
             allVelocity(allMatrixIndex, :)     = velocity;
             allAcceleration(allMatrixIndex, :) = acceleration;
 
-                % Check if particle is still in view field
-                hit = checkHit(allPosition(allMatrixIndex, :), allPosition(allMatrixIndex-1, :));
-                if any(abs(position) > scale) || hit == 1
-                   particleInViewField = false;
-                   break;
-                end
+            % Check if particle is still in view field
+            hit = checkHit(allPosition(allMatrixIndex, :), allPosition(allMatrixIndex-1, :));
+            if any(abs(position) > scale) || hit == 1
+               particleInViewField = false;
+               break;
+            end
 
             % Print statement is unnecessary and imparts useless load
             % fprintf('I: %f\t X: %f\t Y: %f\t Z: %f\n', iteration, position(1), position(2), position(3))
@@ -87,10 +87,10 @@ function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
             allB(1, :) = zeros();
             allPosition = allPosition(any(allPosition, 2), :);
 
-               % Comment out if using CSV
-                 plotParticle(wireGeometry, allPosition, allB)
+            % Comment out if using CSV
+            plotParticle(wireGeometry, allPosition, allB)
 
-            fprintf('Particle origin [%f, %f, %f] \nSimulation finished, particle plotted \n\n', allPosition(1,1), allPosition(1,2), allPosition(1,3))
+            fprintf('Simulation complete \n\n')
         end
     end
 end
