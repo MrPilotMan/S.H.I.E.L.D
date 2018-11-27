@@ -36,11 +36,11 @@
 #### Version Benchmarks
 | Version | Total Time | Particle Time | Memory per Particle | Particle Improvement | Memory Improvement | Notes   |         
 |---------|------------|---------------|---------------------|----------------------|--------------------|---------|
-| 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | 0%                   | 0%   |Only produced valid 19 plots.| 
-| 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 821%                 | 349% |Refactor & CPU/MEM optimization.|
-| 1.1     | 09m 50s    | 0m 06s        | 99.90 MB            | 3833%                | 361% |CSV usage and file structure.|
-| 2.0     |            |               |                     |                      |      |Parallelized with hit detection.|
-| 3.0     |            |               |                     |                      |      |C++ translation.|
+| 0.0     | 73m 54s    | 3m 50s        | 361.57 MB           | 0%                   | 0%   |Only produced 19 valid plots.    | 
+| 1.0     | 46m 09s    | 0m 28s        | 103.40 MB           | 821%                 | 349% |Refactor & CPU/MEM optimization. |
+| 1.1     | 09m 50s    | 0m 06s        | 99.90 MB            | 3833%                | 361% |CSV usage and file structure.    |
+| 2.0     |            |               |                     |                      |      |Parallelized with hit detection. |
+| 3.0     |            |               |                     |                      |      |C++ translation.                 |
 
 
 ##### Standard Benchmarking Parameters
