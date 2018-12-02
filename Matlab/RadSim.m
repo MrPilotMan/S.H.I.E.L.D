@@ -5,11 +5,11 @@ useCSV             = false;
 prefix             = 'a';
 
 % Parameters
-delta              = -8; % seconds
+delta              = -8;  % seconds
 scale              = 150; % meters
 
-innerRadius        = 10;   % meters
-torusRadius        = 20;   % meters
+innerRadius        = 10;  % meters
+torusRadius        = 20;  % meters
 
 % Data
 hits               = 0;
@@ -31,7 +31,7 @@ if parallel == false
         [position, B, hit] = simulateParticle(wireGeometry, delta, scale);
         particlesSimualted = particlesSimualted + 1;
         hits = hits + hit;
-        misses = misses + abs(1 - hits);
+        misses = misses + (1 - hit);
         
         if useCSV == false
             plotParticle(wireGeometry, position, B)
@@ -65,5 +65,4 @@ else
     toc
 end
 
-misses = particlesRequested - hits;
 fprintf('\n\n All particles generated \nHits: %.0f \nMisses: %.0f \n', hits, misses)
