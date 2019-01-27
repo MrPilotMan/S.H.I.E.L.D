@@ -22,6 +22,19 @@
   2. If you wish to gereate the `wireGeometry` during the simulation, make sure the above two lines are reversed and you have manually set any variables in `generateWireGeometry.m`.
 6. If you want to run the simulation in parallel, simply set `parallel = true`.
    1. On termination or completion, MatLab will display the plots.
+
+## Data Logged
+
+1. Particle Type
+2. Approach Inclination
+3. X,Y,Z Position
+4. X,Y,Z Velocity
+5. X,Y,Z Acceleration
+6. Magnetic Field Force
+7. Hit Value
+    1. 0 = Miss
+    2. 1 = Perimiter Penetration
+    3. 2 = Direct Penetration
    
 ## Benchmarks
 
@@ -70,9 +83,9 @@ delta = 1e^-6
    * [X] Read in wire geometry from CSV
    * [ ] CSV particle simulation interpreter & plotter
 * [ ] Parallelization
-   * [ ] MATLAB
+   * [X] MATLAB
    * [ ] C++
-* [ ] Hit detection
+* [X] Hit detection
 * [ ] Data collection
    * [X] Particle type
    * [ ] Approach angle
@@ -80,11 +93,15 @@ delta = 1e^-6
 
 ## Contributors (Alphabetical by last name)
 * John Galjanic
-   * Hit detection
+  * Original code base
 
-* Sam Kopp (GitHub username - MrPilotMan)
-  * Refactor and optimization
-  * Use CSV for collecting and loading data
+* Sam Kopp
+  * Refactor
+  * Optimizations
+  * Data logging and parsing
+  * Expansion of hit detection
 
 * Brennan McCann
-  * Original simulation
+  * Original code base
+
+* Special thanks to Fred Benham for the hit detection algorithm.

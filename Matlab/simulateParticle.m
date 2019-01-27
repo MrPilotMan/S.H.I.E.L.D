@@ -1,8 +1,7 @@
 function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
-
     I      = 10;              % A
-    mu     = 4 * pi * 10^-7; % [Tm/A]
     fourPi = 4 * pi;
+    mu     = fourPi * 10^-7;  % Tm/A
 
     particleInViewField = true;
     while particleInViewField == true
@@ -19,8 +18,7 @@ function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
         acceleration    = [env(9), env(10), env(11)];
 
         % Preallocate all-Matricies memory
-        % Allocations are only estimates, marticies will be resized as needed
-        % May be able to calculate matrix size using position. Might be a waste of compute resources.
+        % Allocations are only estimates, marticies will be resized as needed.
         allB            = zeros(10e3, 3);
         allPosition     = zeros(10e3, 3);
         allVelocity     = zeros(10e3, 3);
@@ -69,7 +67,8 @@ function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
             allAcceleration(allMatrixIndex, :) = acceleration;
 
             % Check if particle is still in view field
-            hit = checkHit(allPosition(allMatrixIndex, :), allPosition(allMatrixIndex-1, :));
+            hit = false;
+            hit = hit + checkHit(allPosition(allMatrixIndex, :), allPosition(allMatrixIndex-1, :));
             if any(abs(position) > scale) || hit == 1
                particleInViewField = false;
                break;
@@ -86,9 +85,6 @@ function [allPosition, allB, hit] = simulateParticle(wireGeometry, delta, scale)
             allB = allB(any(allB, 2), :);
             allB(1, :) = zeros();
             allPosition = allPosition(any(allPosition, 2), :);
-
-            % Comment out if using CSV
-            plotParticle(wireGeometry, allPosition, allB)
 
             fprintf('Simulation complete \n\n')
         end

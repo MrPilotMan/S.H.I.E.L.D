@@ -1,14 +1,17 @@
 % Set up
-particlesRequested = 18;
+particlesRequested = 12;
 parallel           = false;
 useCSV             = false;
+useWireGeometry    = true;
+wireGeometryFile   = '1e3.mat';
 prefix             = 'a';
 
-% Parameters
+% Simulation Parameters
 delta              = -8;  % seconds
 scale              = 150; % meters
 
-innerRadius        = 10;  % meters
+% Spacecraft Parameters
+innerRadius        = 10;  % meters - based on NASA's Orion capsule
 torusRadius        = 20;  % meters
 
 % Data
@@ -16,10 +19,11 @@ hits               = 0;
 misses             = 0;
 allTocs            = 0;
 
-% Comment out if loading a pregenerated wireGeometry
-% wireGeometry = generateWireGeometry(innerRadius, torusRadius);
-% Read in wireGeometry from .mat file
-load('wireGeometry/1e3.mat');
+if useWireGeometry == true
+    load(['wireGeometry/' wireGeometryFile]);
+else
+   wireGeometry = generateWireGeometry(innerRadius, torusRadius); 
+end
 
 if parallel == false
     particlesSimualted = 0;
